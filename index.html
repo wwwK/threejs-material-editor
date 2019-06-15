@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ThreeJS Material Editor</title>
+
+    <link rel="stylesheet" href="./css/theme-dark.css">
+
+</head>
+
+<body>
+
+    <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r100/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r100/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r100/examples/js/libs/stats.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/dataarts/dat.gui@master/build/dat.gui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/millermedeiros/js-signals@v1.0.0/dist/signals.min.js"></script>
+
+    <script src="./js/three-core.js"></script>
+    <script src="./js/editor-core.js"></script>
+    <script src="./js/editor.js"></script>
+
+    </script>
+
+    <div id="editor_canvas" class="editor_canvas"></div>
+
+    <script>
+
+        var editor = new Editor(); editor.init();
+
+    </script>
+
+</body>
+
+</html>
