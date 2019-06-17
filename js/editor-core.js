@@ -6,9 +6,18 @@ var MaterialEditor = function (editor) {
   var currentMaterial, materialList = {}, materialNameList = [];
   var currentTexture, textureList = {}, textureNameList = [];
 
-  var materialEditorGUI, objectListFolder, materialListFolder, meshMaterialFolder;
-  var meshBasicMaterialFolder, meshLambertMaterialFolder, meshPhongMaterialFolder;
+  var sceneFolder, objectListFolder, materialEditorGUI, materialListFolder, meshMaterialFolder;
+  var meshBasicMaterialFolder, meshLambertMaterialFolder, meshPhongMaterialFolder, meshStandardMaterialFolder, meshPhysicalMaterialFolder;
   var objectController, materialNameController, materialTypeController;
+
+  // 场景属性
+  var sceneAttributes = {
+
+    lightColor: 0xFFFFFF, lightIntensity: 1.0,
+    ambientLightColor: 0xFFFFFF, ambientLightIntensity: 0.5,
+    backgroundColor: 0x888888
+
+  };
 
   // 对象属性
   var objectAttributes = { object: "" };
@@ -18,23 +27,25 @@ var MaterialEditor = function (editor) {
 
     name: "", type: "MeshLambertMaterial",
 
-    transparent: false, opacity: 1.0, side: "FrontSide", visible: true,
+    transparent: false, opacity: 1.0, side: "正面", visible: true,
 
     alphaTest: 0.0, depthTest: true, depthWrite: true, flatShading: false, lights: true, fog: true,
 
-    color: 0xFFFFFF, emissive: 0x000000, emissiveIntensity: 1.0, emissiveMap: "",
+    color: 0xFFFFFF, emissive: 0x000000, emissiveMap: "", emissiveIntensity: 1.0,
+
+    roughness: 0.5, metalness: 0.5, metalnessMap: "", clearCoat: 0.0, clearCoatRoughness: 0.0,
 
     map: "", alphaMap: "", specular: 0x111111, shininess: 30, specularMap: "",
 
     normalMap: "", normalScale: {}, normalMapType: "", bumpMap: "", bumpScale: 1.0,
 
-    envMap: "", combine: "", reflectivity: 1.0,
+    envMap: "", envMapIntensity: 0.0, combine: "", reflectivity: 1.0,
 
     aoMap: "", aoMapIntensity: 1.0, lightMap: "", lightMapIntensity: 1.0,
 
     refractionRatio: 0.98,
 
-    wireframe: false,
+    wireframe: false
 
   };
 
@@ -51,6 +62,8 @@ var MaterialEditor = function (editor) {
     editor.signals.createMaterialEditor.add(createBasicMaterialEditor);
     editor.signals.createMaterialEditor.add(createLambertMaterialEditor);
     editor.signals.createMaterialEditor.add(createPhongMaterialEditor);
+    editor.signals.createMaterialEditor.add(createStandardMaterialEditor);
+    editor.signals.createMaterialEditor.add(createPhysicalMaterialEditor);
 
     // 材质属性添加
     editor.signals.addMaterialAttributes = new signals.Signal();
@@ -58,6 +71,11 @@ var MaterialEditor = function (editor) {
     editor.signals.addMaterialAttributes.add(materialAddEmissive);
     editor.signals.addMaterialAttributes.add(materialAddEmissiveMap);
     editor.signals.addMaterialAttributes.add(materialAddEmissiveIntensity);
+    editor.signals.addMaterialAttributes.add(materialAddRoughness);
+    editor.signals.addMaterialAttributes.add(materialAddMetalness);
+    editor.signals.addMaterialAttributes.add(materialAddMetalnessMap);
+    editor.signals.addMaterialAttributes.add(materialAddClearCoat);
+    editor.signals.addMaterialAttributes.add(materialAddClearCoatRoughness);
     editor.signals.addMaterialAttributes.add(materialAddMap);
     editor.signals.addMaterialAttributes.add(materialAddAlphaMap);
     editor.signals.addMaterialAttributes.add(materialAddSpecular);
@@ -66,6 +84,7 @@ var MaterialEditor = function (editor) {
     editor.signals.addMaterialAttributes.add(materialAddNormalMap);
     editor.signals.addMaterialAttributes.add(materialAddBumpMap);
     editor.signals.addMaterialAttributes.add(materialAddEnvMap);
+    editor.signals.addMaterialAttributes.add(materialAddEnvMapIntensity);
     editor.signals.addMaterialAttributes.add(materialAddCombine);
     editor.signals.addMaterialAttributes.add(materialAddReflectivity);
     editor.signals.addMaterialAttributes.add(materialAddAoMap);
@@ -83,6 +102,35 @@ var MaterialEditor = function (editor) {
 
     materialEditorGUI = self.materialEditorGUI = new dat.GUI();
     materialEditorGUI.width = 320;
+
+    sceneFolder = materialEditorGUI.addFolder("场景属性");
+
+    // 主光源颜色
+    sceneFolder.addColor(sceneAttributes, "lightColor").name("主光源颜色").onChange(function (value) {
+
+    });
+
+    // 主光源强度
+    sceneFolder.add(sceneAttributes, "lightIntensity", 0.0, 5.0, 0.01).name("主光源强度").onChange(function (value) {
+
+    });
+
+    // 环境光颜色
+    sceneFolder.addColor(sceneAttributes, "ambientLightColor").name("环境光颜色").onChange(function (value) {
+
+    });
+
+    // 环境光强度
+    sceneFolder.add(sceneAttributes, "ambientLightIntensity", 0.0, 5.0, 0.01).name("环境光强度").onChange(function (value) {
+
+    });
+
+    // 背景色
+    sceneFolder.addColor(sceneAttributes, "backgroundColor").name("背景色").onChange(function (value) {
+
+      editor.threeCore.renderer.setClearColor(value);
+
+    });
 
     objectListFolder = materialEditorGUI.addFolder("对象列表");
     materialListFolder = materialEditorGUI.addFolder("材质列表");
@@ -177,6 +225,8 @@ var MaterialEditor = function (editor) {
       materialAttributes.type = currentMaterial.type;
       materialTypeController.updateDisplay();
 
+      updateCurrentMaterial2Attributes();
+
       editor.signals.createMaterialEditor.dispatch({ name: value, type: materialAttributes.type });
 
     });
@@ -201,6 +251,8 @@ var MaterialEditor = function (editor) {
         case "MeshBasicMaterial": currentMaterial = new THREE.MeshBasicMaterial(); break;
         case "MeshLambertMaterial": currentMaterial = new THREE.MeshLambertMaterial(); break;
         case "MeshPhongMaterial": currentMaterial = new THREE.MeshPhongMaterial(); break;
+        case "MeshStandardMaterial": currentMaterial = new THREE.MeshStandardMaterial(); break;
+        case "MeshPhysicalMaterial": currentMaterial = new THREE.MeshPhysicalMaterial(); break;
 
       }
 
@@ -216,6 +268,8 @@ var MaterialEditor = function (editor) {
 
       });
 
+      updateCurrentMaterial2Attributes();
+
       editor.signals.createMaterialEditor.dispatch({ name: materialAttributes.name, type: value });
 
     });
@@ -225,7 +279,15 @@ var MaterialEditor = function (editor) {
   // 更新当前材质属性到编辑器
   function updateCurrentMaterial2Attributes() {
 
+    materialAttributes.transparent = currentMaterial.transparent;
+    materialAttributes.opacity = currentMaterial.opacity;
+    // materialAttributes.side = currentMaterial.side;
+    materialAttributes.visible = currentMaterial.visible;
+    materialAttributes.alphaTest = currentMaterial.alphaTest;
+    materialAttributes.depthTest = currentMaterial.depthTest;
+
     materialAttributes.color = currentMaterial.color.getHex();
+    materialAttributes.emissive = currentMaterial.emissive.getHex();
 
   }
 
@@ -360,6 +422,46 @@ var MaterialEditor = function (editor) {
 
   }
 
+  // 创建标准材质属性编辑器
+  function createStandardMaterialEditor(data) {
+
+    if (meshStandardMaterialFolder !== undefined) {
+
+      materialEditorGUI.removeFolder(meshStandardMaterialFolder);
+      meshStandardMaterialFolder = undefined;
+
+    }
+
+    if (data.type !== "MeshStandardMaterial") { return; }
+
+    meshStandardMaterialFolder = materialEditorGUI.addFolder("标准材质属性");
+
+    editor.signals.addMaterialAttributes.dispatch(meshStandardMaterialFolder);
+
+    meshStandardMaterialFolder.open();
+
+  }
+
+  // 创建物理材质属性编辑器
+  function createPhysicalMaterialEditor(data) {
+
+    if (meshPhysicalMaterialFolder !== undefined) {
+
+      materialEditorGUI.removeFolder(meshPhysicalMaterialFolder);
+      meshPhysicalMaterialFolder = undefined;
+
+    }
+
+    if (data.type !== "MeshPhysicalMaterial") { return; }
+
+    meshPhysicalMaterialFolder = materialEditorGUI.addFolder("物理材质材质属性");
+
+    editor.signals.addMaterialAttributes.dispatch(meshPhysicalMaterialFolder);
+
+    meshPhysicalMaterialFolder.open();
+
+  }
+
   /*********************************************/
   /* 向材质编辑器添加属性操作控件                 */
   /*********************************************/
@@ -415,6 +517,82 @@ var MaterialEditor = function (editor) {
 
   }
 
+  // 添加 粗糙度
+  function materialAddRoughness(folder) {
+
+    if (materialAttributes.type === "MeshBasicMaterial") { return; }
+    if (materialAttributes.type === "MeshLambertMaterial") { return; }
+    if (materialAttributes.type === "MeshPhongMaterial") { return; }
+
+    folder.add(materialAttributes, "roughness", 0.0, 1.0, 0.01).name("粗糙度").onChange(function (value) {
+
+      currentMaterial.roughness = value;
+
+    });
+
+  }
+
+  // 添加 金属度
+  function materialAddMetalness(folder) {
+
+    if (materialAttributes.type === "MeshBasicMaterial") { return; }
+    if (materialAttributes.type === "MeshLambertMaterial") { return; }
+    if (materialAttributes.type === "MeshPhongMaterial") { return; }
+
+    folder.add(materialAttributes, "metalness", 0.0, 1.0, 0.01).name("金属度").onChange(function (value) {
+
+      currentMaterial.metalness = value;
+
+    });
+
+  }
+
+  // 添加 金属贴图
+  function materialAddMetalnessMap(folder) {
+
+    if (materialAttributes.type === "MeshBasicMaterial") { return; }
+    if (materialAttributes.type === "MeshLambertMaterial") { return; }
+    if (materialAttributes.type === "MeshPhongMaterial") { return; }
+
+    folder.add(materialAttributes, "metalnessMap", textureNameList).name("金属贴图").onChange(function (value) {
+
+      currentMaterial.metalnessMap = textureList[value];
+      currentMaterial.needsUpdate = true;
+
+    });
+
+  }
+
+  // 添加 透明涂层
+  function materialAddClearCoat(folder) {
+
+    if (materialAttributes.type === "MeshBasicMaterial") { return; }
+    if (materialAttributes.type === "MeshLambertMaterial") { return; }
+    if (materialAttributes.type === "MeshPhongMaterial") { return; }
+
+    folder.add(materialAttributes, "clearCoat", 0.0, 1.0, 0.01).name("透明涂层").onChange(function (value) {
+
+      currentMaterial.clearCoat = value;
+
+    });
+
+  }
+
+  // 添加 透明涂层粗糙度
+  function materialAddClearCoatRoughness(folder) {
+
+    if (materialAttributes.type === "MeshBasicMaterial") { return; }
+    if (materialAttributes.type === "MeshLambertMaterial") { return; }
+    if (materialAttributes.type === "MeshPhongMaterial") { return; }
+
+    folder.add(materialAttributes, "clearCoatRoughness", 0.0, 1.0, 0.01).name("清漆粗糙度").onChange(function (value) {
+
+      currentMaterial.clearCoatRoughness = value;
+
+    });
+
+  }
+
   // 添加 贴图
   function materialAddMap(folder) {
 
@@ -444,6 +622,8 @@ var MaterialEditor = function (editor) {
 
     if (materialAttributes.type === "MeshBasicMaterial") { return; }
     if (materialAttributes.type === "MeshLambertMaterial") { return; }
+    if (materialAttributes.type === "MeshStandardMaterial") { return; }
+    if (materialAttributes.type === "MeshPhysicalMaterial") { return; }
 
     folder.addColor(materialAttributes, "specular").name("高光颜色").onChange(function (value) {
 
@@ -458,6 +638,8 @@ var MaterialEditor = function (editor) {
 
     if (materialAttributes.type === "MeshBasicMaterial") { return; }
     if (materialAttributes.type === "MeshLambertMaterial") { return; }
+    if (materialAttributes.type === "MeshStandardMaterial") { return; }
+    if (materialAttributes.type === "MeshPhysicalMaterial") { return; }
 
     folder.add(materialAttributes, "shininess", 0.0, 100.0, 0.1).name("高光强度").onChange(function (value) {
 
@@ -469,6 +651,9 @@ var MaterialEditor = function (editor) {
 
   // 添加 高光贴图
   function materialAddSpecularMap(folder) {
+
+    if (materialAttributes.type === "MeshStandardMaterial") { return; }
+    if (materialAttributes.type === "MeshPhysicalMaterial") { return; }
 
     folder.add(materialAttributes, "specularMap", textureNameList).name("高光贴图").onChange(function (value) {
 
@@ -515,7 +700,24 @@ var MaterialEditor = function (editor) {
     folder.add(materialAttributes, "envMap", textureNameList).name("环境贴图").onChange(function (value) {
 
       currentMaterial.envMap = textureList[value];
+      currentMaterial.envMap.mapping = THREE.EquirectangularReflectionMapping;
+      currentMaterial.envMap.needsUpdate = true;
       currentMaterial.needsUpdate = true;
+
+    });
+
+  }
+
+  // 添加 环境贴图强度
+  function materialAddEnvMapIntensity(folder) {
+
+    if (materialAttributes.type === "MeshBasicMaterial") { return; }
+    if (materialAttributes.type === "MeshLambertMaterial") { return; }
+    if (materialAttributes.type === "MeshPhongMaterial") { return; }
+
+    folder.add(materialAttributes, "envMapIntensity", 0.0, 1.0, 0.01).name("环境贴图强度").onChange(function (value) {
+
+      currentMaterial.envMapIntensity = value;
 
     });
 
@@ -523,6 +725,9 @@ var MaterialEditor = function (editor) {
 
   // 添加 环境贴图结合方式
   function materialAddCombine(folder) {
+
+    if (materialAttributes.type === "MeshStandardMaterial") { return; }
+    if (materialAttributes.type === "MeshPhysicalMaterial") { return; }
 
     folder.add(materialAttributes, "combine", ["相乘", "混合", "相加"]).name("环境贴图结合方式").onChange(function (value) {
 
@@ -542,6 +747,8 @@ var MaterialEditor = function (editor) {
 
   // 添加 反射率
   function materialAddReflectivity(folder) {
+
+    if (materialAttributes.type === "MeshStandardMaterial") { return; }
 
     folder.add(materialAttributes, "reflectivity", 0.0, 1.0, 0.01).name("反射率").onChange(function (value) {
 
@@ -586,10 +793,10 @@ var MaterialEditor = function (editor) {
 
   }
 
-  // 添加 烘焙光强度
+  // 添加 光照贴图强度
   function materialAddLightMapIntensity(folder) {
 
-    folder.add(materialAttributes, "lightMapIntensity", 0.0, 1.0, 0.01).name("烘焙光强度").onChange(function (value) {
+    folder.add(materialAttributes, "lightMapIntensity", 0.0, 1.0, 0.01).name("光照贴图强度").onChange(function (value) {
 
       currentMaterial.lightMapIntensity = value;
 
@@ -609,3 +816,4 @@ var MaterialEditor = function (editor) {
   }
 
 };
+

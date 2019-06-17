@@ -26,13 +26,13 @@ var ThreeCore = function () {
     scene.position.set(0, 0, 0);
 
     // 主光源
-    light = self.light = new THREE.DirectionalLight(0xFFFFFF, 0.85);
+    light = self.light = new THREE.DirectionalLight(0xFFFFFF, 1.0);
     light.position.set(-500, 500, -500);
     light.target = scene;
     scene.add(light);
 
     // 环境光
-    ambientLight = self.ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.4);
+    ambientLight = self.ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.5);
     scene.add(ambientLight);
 
     // 摄像机
