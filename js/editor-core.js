@@ -49,7 +49,7 @@ var MaterialEditor = function (editor) {
 
   };
 
-  var functionOptions = {
+  self.functionOptions = {
 
     save: function () { saveString(JSON.stringify(currentObject.toJSON()), "model.json"); },
 
@@ -108,8 +108,6 @@ var MaterialEditor = function (editor) {
 
     materialEditorGUI = self.materialEditorGUI = new dat.GUI();
     materialEditorGUI.width = 320;
-
-    materialEditorGUI.add(functionOptions, "save").name("导出");
 
     sceneFolder = materialEditorGUI.addFolder("场景属性");
 
