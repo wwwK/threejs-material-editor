@@ -23,8 +23,10 @@
     <script src="https://cdn.jsdelivr.net/gh/Ouyang-Zhaoxing/drcobj@v0.9.2-pre/src/vendor/drace_loader.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/Ouyang-Zhaoxing/drcobj@v0.9.2-pre/src/js/drcobj_loader.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/Ouyang-Zhaoxing/drcobj@v0.9.0-pre/src/js/utils.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/dataarts/dat.gui@master/build/dat.gui.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/gh/dataarts/dat.gui@master/build/dat.gui.min.js"></script> -->
     <script src="https://cdn.jsdelivr.net/gh/millermedeiros/js-signals@v1.0.0/dist/signals.min.js"></script>
+
+    <script src="./js/vendor/dat.gui.js"></script>
 
     <script src="./js/three-core.js"></script>
     <script src="./js/editor-core.js"></script>
@@ -34,17 +36,12 @@
 
     <div id="editor_canvas" class="editor_canvas"></div>
 
-    <div
-        style="position:absolute; left:10px; bottom:10px; width:335px; height:35px; border-radius:5px; background:#000; opacity:0.5;">
-        <div style="color:#FFF; margin: 8px 10px 8px 10px; font-size:12px; opacity:0.8">通过拖放文件导入模型（JSON/FBX）或贴图（JPG/PNG）
-        </div>
+    <div style="position:absolute; left:10px; bottom:10px; width:335px; height:35px; border-radius:5px; background:#000; opacity:0.5;">
+        <div style="color:#FFF; margin: 8px 10px 8px 10px; font-size:12px; opacity:0.8">通过拖放文件导入模型（JSON/FBX）或贴图（JPG/PNG）</div>
     </div>
 
-
     <script>
-
-        var editor = new Editor(); editor.init();
-
+        (new Editor()).init();
     </script>
 
 </body>
