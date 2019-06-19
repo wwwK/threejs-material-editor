@@ -631,7 +631,7 @@ var MaterialEditor = function (editor) {
 
     if (data.type !== "MeshPhysicalMaterial") { return; }
 
-    meshPhysicalMaterialFolder = materialEditorGUI.addFolder("物理材质材质属性");
+    meshPhysicalMaterialFolder = materialEditorGUI.addFolder("物理材质属性");
 
     editor.signals.addMaterialAttributes.dispatch(meshPhysicalMaterialFolder);
 
@@ -659,7 +659,7 @@ var MaterialEditor = function (editor) {
 
     if (materialAttributes.type === "MeshBasicMaterial") { return; }
 
-    folder.addColor(materialAttributes, "emissive").name("自发光").onChange(function (value) {
+    folder.addColor(materialAttributes, "emissive").name("放射光颜色").onChange(function (value) {
 
       currentMaterial.emissive.setHex(value);
 
