@@ -294,13 +294,162 @@ var MaterialEditor = function (editor) {
 
     materialAttributes.transparent = currentMaterial.transparent;
     materialAttributes.opacity = currentMaterial.opacity;
-    // materialAttributes.side = currentMaterial.side;
-    materialAttributes.visible = currentMaterial.visible;
     materialAttributes.alphaTest = currentMaterial.alphaTest;
-    materialAttributes.depthTest = currentMaterial.depthTest;
 
+    switch (currentMaterial.side) {
+      case THREE.FrontSide: materialAttributes.side = "正面"; break;
+      case THREE.BackSide: materialAttributes.side = "反面"; break;
+      case THREE.DoubleSide: materialAttributes.side = "双面"; break;
+    }
+
+    materialAttributes.depthTest = currentMaterial.depthTest;
+    materialAttributes.depthTest = currentMaterial.depthWrite;
+    materialAttributes.visible = currentMaterial.visible;
+
+    // 颜色
     materialAttributes.color = currentMaterial.color.getHex();
-    materialAttributes.emissive = currentMaterial.emissive.getHex();
+
+    // 放射光颜色
+    if (currentMaterial.type !== "MeshBasicMaterial") {
+      materialAttributes.emissive = currentMaterial.emissive.getHex();
+    }
+
+    // 放射光贴图
+    if (currentMaterial.type !== "MeshBasicMaterial") {
+      materialAttributes.emissiveMap = "none";
+      if (currentMaterial.emissiveMap) { materialAttributes.emissiveMap = currentMaterial.emissiveMap.name; }
+    }
+
+    // 放射光强度
+    if (currentMaterial.type !== "MeshBasicMaterial") {
+      materialAttributes.emissiveIntensity = currentMaterial.emissiveIntensity;
+    }
+
+    // 粗糙度
+    if (currentMaterial.type !== "MeshBasicMaterial" &&
+      currentMaterial.type !== "MeshLambertMaterial" &&
+      currentMaterial.type !== "MeshPhongMaterial") {
+      materialAttributes.roughness = currentMaterial.roughness;
+    }
+
+    // 金属度
+    if (currentMaterial.type !== "MeshBasicMaterial" &&
+      currentMaterial.type !== "MeshLambertMaterial" &&
+      currentMaterial.type !== "MeshPhongMaterial") {
+      materialAttributes.metalness = currentMaterial.metalness;
+    }
+
+    // 金属贴图
+    if (currentMaterial.type !== "MeshBasicMaterial" &&
+      currentMaterial.type !== "MeshLambertMaterial" &&
+      currentMaterial.type !== "MeshPhongMaterial") {
+      materialAttributes.metalnessMap = "none";
+      if (currentMaterial.metalnessMap) { materialAttributes.metalnessMap = currentMaterial.metalnessMap.name; }
+    }
+
+    // 透明涂层
+    if (currentMaterial.type !== "MeshBasicMaterial" &&
+      currentMaterial.type !== "MeshLambertMaterial" &&
+      currentMaterial.type !== "MeshPhongMaterial" &&
+      currentMaterial.type !== "MeshStandardMaterial") {
+      materialAttributes.clearCoat = currentMaterial.clearCoat;
+    }
+
+    // 透明涂层粗糙度
+    if (currentMaterial.type !== "MeshBasicMaterial" &&
+      currentMaterial.type !== "MeshLambertMaterial" &&
+      currentMaterial.type !== "MeshPhongMaterial" &&
+      currentMaterial.type !== "MeshStandardMaterial") {
+      materialAttributes.clearCoatRoughness = currentMaterial.clearCoatRoughness;
+    }
+
+    // 贴图
+    materialAttributes.map = "none";
+    if (currentMaterial.map) { materialAttributes.map = currentMaterial.map.name; }
+
+    // 透明贴图
+    materialAttributes.alphaMap = "none";
+    if (currentMaterial.alphaMap) { materialAttributes.alphaMap = currentMaterial.alphaMap.name; }
+
+    // 高光颜色
+    if (currentMaterial.type !== "MeshBasicMaterial" &&
+      currentMaterial.type !== "MeshLambertMaterial" &&
+      currentMaterial.type !== "MeshStandardMaterial" &&
+      currentMaterial.type !== "MeshPhysicalMaterial") {
+      materialAttributes.specular = currentMaterial.specular.getHex();
+    }
+
+    // 高光强度
+    if (currentMaterial.type !== "MeshBasicMaterial" &&
+      currentMaterial.type !== "MeshLambertMaterial" &&
+      currentMaterial.type !== "MeshStandardMaterial" &&
+      currentMaterial.type !== "MeshPhysicalMaterial") {
+      materialAttributes.shininess = currentMaterial.shininess;
+    }
+
+    // 高光贴图
+    if (currentMaterial.type !== "MeshStandardMaterial" &&
+      currentMaterial.type !== "MeshPhysicalMaterial") {
+      materialAttributes.specularMap = "none";
+      if (currentMaterial.specularMap) { materialAttributes.specularMap = currentMaterial.specularMap.name; }
+    }
+
+    // 法线贴图
+    if (currentMaterial.type !== "MeshBasicMaterial" &&
+      currentMaterial.type !== "MeshLambertMaterial") {
+      materialAttributes.normalMap = "none";
+      if (currentMaterial.normalMap) { materialAttributes.normalMap = currentMaterial.normalMap.name; }
+    }
+
+    // 凹凸贴图
+    if (currentMaterial.type !== "MeshBasicMaterial" &&
+      currentMaterial.type !== "MeshLambertMaterial") {
+      materialAttributes.bumpMap = "none";
+      if (currentMaterial.bumpMap) { materialAttributes.bumpMap = currentMaterial.bumpMap.name; }
+    }
+
+    // 环境贴图
+    materialAttributes.envMap = "none";
+    if (currentMaterial.envMap) { materialAttributes.envMap = currentMaterial.envMap.name; }
+
+    // 环境贴图强度
+    if (currentMaterial.type !== "MeshBasicMaterial" &&
+      currentMaterial.type !== "MeshLambertMaterial" &&
+      currentMaterial.type !== "MeshPhongMaterial") {
+      materialAttributes.envMapIntensity = currentMaterial.envMapIntensity;
+    }
+
+    // 环境贴图结合方式
+    if (currentMaterial.type !== "MeshStandardMaterial" &&
+      currentMaterial.type !== "MeshPhysicalMaterial") {
+      switch (currentMaterial.combine) {
+        case THREE.Multiply: materialAttributes.side = "相乘"; break;
+        case THREE.MixOperation: materialAttributes.side = "混合"; break;
+        case THREE.AddOperation: materialAttributes.side = "相加"; break;
+      }
+    }
+
+    // 反射率
+    if (currentMaterial.type !== "MeshStandardMaterial") {
+      materialAttributes.reflectivity = currentMaterial.reflectivity;
+    }
+
+    // 环境遮挡贴图
+    materialAttributes.aoMapIntensity = "none";
+    if (currentMaterial.aoMapIntensity) { materialAttributes.aoMapIntensity = currentMaterial.aoMapIntensity.name; }
+
+    // 环境遮挡强度
+    materialAttributes.aoMapIntensity = currentMaterial.aoMapIntensity;
+
+    // 光照贴图
+    materialAttributes.lightMap = "none";
+    if (currentMaterial.lightMap) { materialAttributes.lightMap = currentMaterial.lightMap.name; }
+
+    // 光照贴图强度
+    materialAttributes.lightMapIntensity = currentMaterial.lightMapIntensity;
+
+    // 折射率
+    materialAttributes.refractionRatio = currentMaterial.refractionRatio;
 
   }
 
