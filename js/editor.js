@@ -93,12 +93,23 @@ var Editor = function () {
     if (extension === "json") {
 
       reader.addEventListener("load", function (event) {
-
         importObjectHandler(file, event.target.result);
-
       }, false);
 
       reader.readAsText(file);
+
+      return;
+
+    }
+
+    // FBX文件（模型）
+    if (extension === "fbx") {
+
+      reader.addEventListener("load", function (event) {
+        importFBXObjectHandler(file, event.target.result);
+      }, false);
+
+      reader.readAsArrayBuffer(file);
 
       return;
 
@@ -108,9 +119,7 @@ var Editor = function () {
     if (extension === 'jpg' || extension === 'png') {
 
       reader.addEventListener("load", function (event) {
-
         importTextureHandler(file, event.target.result);
-
       }, false);
 
       reader.readAsDataURL(file);
@@ -121,12 +130,21 @@ var Editor = function () {
 
   }
 
-  // 处理对象文件
+  // 处理JSON对象文件
   function importObjectHandler(file, data) {
 
     var objectJson = JSON.parse(data);
 
     var object = threeCore.objectLoader.parse(objectJson);
+
+    self.signals.objectImport.dispatch(object);
+
+  }
+
+  // 处理FBX对象文件
+  function importFBXObjectHandler(file, data) {
+
+    var object = threeCore.fbxLoader.parse(data);
 
     self.signals.objectImport.dispatch(object);
 
