@@ -21,8 +21,8 @@ var Editor = function () {
     self.signals.inited.dispatch();
 
     // 性能监视器
-    stats = new Stats();
-    document.body.appendChild(stats.dom);
+    // stats = new Stats();
+    // document.body.appendChild(stats.dom);
 
     // 监听文件拖放
     threeCore.container.addEventListener('drop', dropHandler);
@@ -54,7 +54,7 @@ var Editor = function () {
 
     threeCore.renderer.render(threeCore.scene, threeCore.camera); // 渲染更新
 
-    stats.update(); // 性能监视器更新
+    // stats.update(); // 性能监视器更新
 
   }
 
