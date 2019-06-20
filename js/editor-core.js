@@ -750,7 +750,7 @@ var MaterialEditor = function (editor) {
     if (materialAttributes.type === "MeshPhongMaterial") { return; }
     if (materialAttributes.type === "MeshStandardMaterial") { return; }
 
-    folder.add(materialAttributes, "clearCoat", 0.0, 1.0, 0.01).name("透明涂层").onChange(function (value) {
+    folder.add(materialAttributes, "clearCoat", 0.0, 1.0, 0.01).name("清漆").onChange(function (value) {
 
       currentMaterial.clearCoat = value;
 
