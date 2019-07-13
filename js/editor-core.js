@@ -109,7 +109,7 @@ var MaterialEditor = function (editor) {
     materialEditorGUI = self.materialEditorGUI = new dat.GUI();
     materialEditorGUI.width = 320;
 
-    sceneFolder = materialEditorGUI.addFolder("场景属性");
+    sceneFolder = materialEditorGUI.addFolder("场景属性（部分功能暂不可用）");
 
     // 主光源颜色
     sceneFolder.addColor(sceneAttributes, "lightColor").name("主光源颜色").onChange(function (value) {
