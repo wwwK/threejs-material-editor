@@ -115,6 +115,19 @@ var Editor = function () {
 
     }
 
+    // DRCOBJ文件（模型）
+    if (extension === "drcobj") {
+
+      reader.addEventListener("load", function (event) {
+        importDrcobjHandler(file, event.target.result);
+      }, false);
+
+      reader.readAsArrayBuffer(file);
+
+      return;
+
+    }
+
     // JPG/PNG（图片文件）
     if (extension === 'jpg' || extension === 'png') {
 
@@ -147,6 +160,17 @@ var Editor = function () {
     var object = threeCore.fbxLoader.parse(data);
 
     self.signals.objectImport.dispatch(object);
+
+  }
+
+  // 处理DRCOBJ对象文件
+  function importDrcobjHandler(file, data) {
+
+    threeCore.drcobjLoader.parse(data, function (object) {
+
+      self.signals.objectImport.dispatch(object);
+
+    });
 
   }
 

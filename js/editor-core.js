@@ -53,6 +53,8 @@ var MaterialEditor = function (editor) {
 
     save: function () { saveString(JSON.stringify(currentObject.toJSON()), "model.json"); },
 
+    save_drcobj: function () { saveArrayBuffer((new THREE.DrcobjExporter()).parse(currentObject.toJSON(), { quantization: [16, 16, 16, 16, 16] }), "model.drcobj"); },
+
   };
 
   /*********************************************/

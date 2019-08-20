@@ -17,15 +17,12 @@
     <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r105/examples/js/controls/OrbitControls.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r105/examples/js/loaders/FBXLoader.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r105/examples/js/libs/inflate.min.js"></script>
-    <!-- <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r105/examples/js/libs/stats.min.js"></script> -->
-    <script src="https://cdn.jsdelivr.net/gh/Ouyang-Zhaoxing/drcobj@v0.9.3-pre/src/vendor/draco_encoder.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/Ouyang-Zhaoxing/drcobj@v0.9.3-pre/src/vendor/draco_exporter.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/Ouyang-Zhaoxing/drcobj@v0.9.3-pre/src/js/drcobj_exporter.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/Ouyang-Zhaoxing/drcobj@v0.9.3-pre/src/vendor/draco_decoder.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/Ouyang-Zhaoxing/drcobj@v0.9.3-pre/src/vendor/drace_loader.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/Ouyang-Zhaoxing/drcobj@v0.9.3-pre/src/js/drcobj_loader.js"></script>
-    <!-- <script src="https://cdn.jsdelivr.net/gh/Ouyang-Zhaoxing/drcobj@v0.9.3-pre/src/js/utils.js"></script> -->
-    <!-- <script src="https://cdn.jsdelivr.net/gh/dataarts/dat.gui@master/build/dat.gui.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/gh/Ouyang-Zhaoxing/drcobj@v0.9.3.1-pre/src/vendor/draco_encoder.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/Ouyang-Zhaoxing/drcobj@v0.9.3.1-pre/src/vendor/draco_exporter.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/Ouyang-Zhaoxing/drcobj@v0.9.3.1-pre/src/js/drcobj_exporter.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/Ouyang-Zhaoxing/drcobj@v0.9.3.1-pre/src/vendor/draco_decoder.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/Ouyang-Zhaoxing/drcobj@v0.9.3.1-pre/src/vendor/draco_loader.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/Ouyang-Zhaoxing/drcobj@v0.9.3.1-pre/src/js/drcobj_loader.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/millermedeiros/js-signals@v1.0.0/dist/signals.min.js"></script>
 
     <script src="./js/vendor/dat.gui.js"></script>
@@ -39,12 +36,19 @@
 
     <div id="editor_canvas" class="editor_canvas"></div>
 
-    <div style="position:absolute; left:10px; bottom:10px; padding:4px; border-radius:5px; background:#000; opacity:0.5; cursor:default;">
-        <div style="color:#FFF; margin:4px; font-size:12px; opacity:0.8">通过拖放文件导入模型 (JSON/FBX) 或贴图 (JPG/PNG)</div>
+    <div
+        style="position:absolute; left:10px; bottom:10px; padding:4px; border-radius:5px; background:#000; opacity:0.5; cursor:default;">
+        <div style="color:#FFF; margin:4px; font-size:12px; opacity:0.8">通过拖放文件导入模型 (JSON/FBX/DRCOBJ) 或贴图 (JPG/PNG)</div>
     </div>
 
-    <div style="position:absolute; top:10px; left:10px; padding:4px; border-radius:5px; background:#000; opacity:0.5; cursor:pointer;" onclick="editor.materialEditor.functionOptions.save()">
-        <div style="color:#FFF; margin:4px; font-size:12px; opacity:0.8">导出</div>
+    <div style="position:absolute; top:10px; left:10px; padding:4px; border-radius:5px; background:#000; opacity:0.5; cursor:pointer;"
+        onclick="editor.materialEditor.functionOptions.save()">
+        <div style="color:#FFF; margin:4px; font-size:12px; opacity:0.8">导出 JSON</div>
+    </div>
+
+    <div style="position:absolute; top:10px; left:95px; padding:4px; border-radius:5px; background:#000; opacity:0.5; cursor:pointer;"
+        onclick="editor.materialEditor.functionOptions.save_drcobj()">
+        <div style="color:#FFF; margin:4px; font-size:12px; opacity:0.8">导出 DRCOBJ</div>
     </div>
 
     <script> var editor = new Editor(); editor.init(); </script>
