@@ -1,59 +1,23 @@
 var MaterialEditor = function (editor) {
 
   var self = this;
-
   var currentObject, objectList = {}, objectNameList = [];
   var currentMaterial, materialList = {}, materialNameList = [];
   var currentTexture, textureList = {}, textureNameList = ["none"];
 
-  var sceneFolder, objectListFolder, materialEditorGUI, materialListFolder, meshMaterialFolder;
+  var materialEditorGUI, sceneFolder, objectListFolder, materialListFolder, meshMaterialFolder;
   var meshBasicMaterialFolder, meshLambertMaterialFolder, meshPhongMaterialFolder, meshStandardMaterialFolder, meshPhysicalMaterialFolder;
   var objectController, materialNameController, materialTypeController;
 
-  // 场景属性
-  var sceneAttributes = {
-
-    lightColor: 0xFFFFFF, lightIntensity: 1.0,
-    ambientLightColor: 0xFFFFFF, ambientLightIntensity: 0.5,
-    backgroundColor: 0x888888
-
-  };
-
-  // 对象属性
-  var objectAttributes = { object: "" };
-
-  // 材质属性
-  var materialAttributes = {
-
-    name: "", type: "MeshLambertMaterial",
-
-    transparent: false, opacity: 1.0, side: "正面", visible: true,
-
-    alphaTest: 0.0, depthTest: true, depthWrite: true, flatShading: false, lights: true, fog: true,
-
-    color: 0xFFFFFF, emissive: 0x000000, emissiveMap: "none", emissiveIntensity: 1.0,
-
-    roughness: 0.5, metalness: 0.5, metalnessMap: "none", clearCoat: 0.0, clearCoatRoughness: 0.0,
-
-    map: "none", alphaMap: "none", specular: 0x111111, shininess: 30, specularMap: "none",
-
-    normalMap: "none", normalScale: {}, normalMapType: "none", bumpMap: "none", bumpScale: 1.0,
-
-    envMap: "none", envMapIntensity: 0.0, combine: "混合", reflectivity: 1.0,
-
-    aoMap: "none", aoMapIntensity: 1.0, lightMap: "none", lightMapIntensity: 1.0,
-
-    refractionRatio: 0.98,
-
-    wireframe: false
-
-  };
-
   self.functionOptions = {
 
-    save: function () { saveString(JSON.stringify(currentObject.toJSON()), "model.json"); },
+    save: function () {
+      saveString(JSON.stringify(currentObject.toJSON()), "model.json");
+    },
 
-    save_drcobj: function () { saveArrayBuffer((new THREE.DrcobjExporter()).parse(currentObject.toJSON(), { quantization: [16, 16, 16, 16, 16] }), "model.drcobj"); },
+    save_drcobj: function () {
+      saveArrayBuffer((new THREE.DrcobjExporter()).parse(currentObject.toJSON(), { quantization: [16, 16, 16, 16, 16] }), "model.drcobj");
+    },
 
   };
 
@@ -112,38 +76,38 @@ var MaterialEditor = function (editor) {
     materialEditorGUI.width = 320;
 
     sceneFolder = materialEditorGUI.addFolder("场景属性（部分功能暂不可用）");
+    createSceneOption();
+
+    objectListFolder = materialEditorGUI.addFolder("对象列表");
+
+    materialListFolder = materialEditorGUI.addFolder("材质列表");
+
+    // materialEditorGUI.close();
+
+  }
+
+  function createSceneOption() {
 
     // 主光源颜色
     sceneFolder.addColor(sceneAttributes, "lightColor").name("主光源颜色").onChange(function (value) {
-
     });
 
     // 主光源强度
     sceneFolder.add(sceneAttributes, "lightIntensity", 0.0, 5.0, 0.01).name("主光源强度").onChange(function (value) {
-
     });
 
     // 环境光颜色
     sceneFolder.addColor(sceneAttributes, "ambientLightColor").name("环境光颜色").onChange(function (value) {
-
     });
 
     // 环境光强度
     sceneFolder.add(sceneAttributes, "ambientLightIntensity", 0.0, 5.0, 0.01).name("环境光强度").onChange(function (value) {
-
     });
 
     // 背景色
     sceneFolder.addColor(sceneAttributes, "backgroundColor").name("背景色").onChange(function (value) {
-
       editor.threeCore.renderer.setClearColor(value);
-
     });
-
-    objectListFolder = materialEditorGUI.addFolder("对象列表");
-    materialListFolder = materialEditorGUI.addFolder("材质列表");
-
-    materialEditorGUI.close();
 
   }
 
@@ -171,6 +135,7 @@ var MaterialEditor = function (editor) {
 
     editor.threeCore.scene.add(object);
 
+    // 创建对象和材质菜单
     createObjectController();
     createMaterialController();
 
@@ -180,10 +145,8 @@ var MaterialEditor = function (editor) {
 
   // 导入纹理
   self.importTexture = function (texture) {
-
     textureList[texture.name] = texture;
     textureNameList.push(texture.name);
-
   };
 
   /*********************************************/
@@ -194,10 +157,8 @@ var MaterialEditor = function (editor) {
   function createObjectController() {
 
     if (objectController !== undefined) {
-
       objectListFolder.remove(objectController);
       objectController = undefined;
-
     }
 
     objectController = objectListFolder.add(objectAttributes, "object", objectNameList);
