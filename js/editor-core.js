@@ -5,7 +5,7 @@ var MaterialEditor = function (editor) {
   var currentMaterial, materialList = {}, materialNameList = [];
   var currentTexture, textureList = {}, textureNameList = ["none"];
 
-  var materialEditorGUI, sceneFolder, objectListFolder, materialListFolder, meshMaterialFolder;
+  var materialEditorGUI, sceneFolder, objectListFolder, materialListFolder, meshMaterialFolder, textureFolder;
   var meshBasicMaterialFolder, meshLambertMaterialFolder, meshPhongMaterialFolder, meshStandardMaterialFolder, meshPhysicalMaterialFolder;
   var objectController, materialNameController, materialTypeController;
 
@@ -21,15 +21,67 @@ var MaterialEditor = function (editor) {
 
   };
 
-  /*********************************************/
-  /* 初始化                                     */
-  /*********************************************/
-
   // 初始化
   self.init = function () {
 
-    // 创建材质编辑器
+    createMenu();
+
     editor.signals.createMaterialEditor = new signals.Signal();
+    editor.signals.addMaterialAttributes = new signals.Signal();
+
+    addMaterialEditorToSignals();
+    addMaterialAttributesToSignals();
+
+  };
+
+  // 创建菜单
+  function createMenu() {
+
+    materialEditorGUI = self.materialEditorGUI = new dat.GUI();
+    materialEditorGUI.width = 320;
+
+    sceneFolder = materialEditorGUI.addFolder("场景属性（部分功能暂不可用）");
+    createSceneOption();
+
+    objectListFolder = materialEditorGUI.addFolder("对象列表");
+    materialListFolder = materialEditorGUI.addFolder("材质列表");
+    textureFolder = materialEditorGUI.addFolder("纹理列表");
+
+    // materialEditorGUI.close();
+
+  }
+
+  function createSceneOption() {
+
+    // 天空盒背景
+    // sceneFolder.add(sceneAttributes, "skyBox", textureNameList).name("天空盒背景").onChange(function (value) {
+    // });
+
+    // 主光源颜色
+    sceneFolder.addColor(sceneAttributes, "lightColor").name("主光源颜色").onChange(function (value) {
+    });
+
+    // 主光源强度
+    sceneFolder.add(sceneAttributes, "lightIntensity", 0.0, 5.0, 0.01).name("主光源强度").onChange(function (value) {
+    });
+
+    // 环境光颜色
+    sceneFolder.addColor(sceneAttributes, "ambientLightColor").name("环境光颜色").onChange(function (value) {
+    });
+
+    // 环境光强度
+    sceneFolder.add(sceneAttributes, "ambientLightIntensity", 0.0, 5.0, 0.01).name("环境光强度").onChange(function (value) {
+    });
+
+    // 背景色
+    sceneFolder.addColor(sceneAttributes, "backgroundColor").name("背景色").onChange(function (value) {
+      editor.threeCore.renderer.setClearColor(value);
+    });
+
+  }
+
+  function addMaterialEditorToSignals() {
+
     editor.signals.createMaterialEditor.add(createMaterialEditor);
     editor.signals.createMaterialEditor.add(createBasicMaterialEditor);
     editor.signals.createMaterialEditor.add(createLambertMaterialEditor);
@@ -37,8 +89,10 @@ var MaterialEditor = function (editor) {
     editor.signals.createMaterialEditor.add(createStandardMaterialEditor);
     editor.signals.createMaterialEditor.add(createPhysicalMaterialEditor);
 
-    // 材质属性添加
-    editor.signals.addMaterialAttributes = new signals.Signal();
+  }
+
+  function addMaterialAttributesToSignals() {
+
     editor.signals.addMaterialAttributes.add(materialAddColor);
     editor.signals.addMaterialAttributes.add(materialAddEmissive);
     editor.signals.addMaterialAttributes.add(materialAddEmissiveMap);
@@ -64,50 +118,6 @@ var MaterialEditor = function (editor) {
     editor.signals.addMaterialAttributes.add(materialAddLightMap);
     editor.signals.addMaterialAttributes.add(materialAddLightMapIntensity);
     editor.signals.addMaterialAttributes.add(materialAddRefractionRatio);
-
-    createMenu();
-
-  };
-
-  // 创建菜单
-  function createMenu() {
-
-    materialEditorGUI = self.materialEditorGUI = new dat.GUI();
-    materialEditorGUI.width = 320;
-
-    sceneFolder = materialEditorGUI.addFolder("场景属性（部分功能暂不可用）");
-    createSceneOption();
-
-    objectListFolder = materialEditorGUI.addFolder("对象列表");
-
-    materialListFolder = materialEditorGUI.addFolder("材质列表");
-
-    // materialEditorGUI.close();
-
-  }
-
-  function createSceneOption() {
-
-    // 主光源颜色
-    sceneFolder.addColor(sceneAttributes, "lightColor").name("主光源颜色").onChange(function (value) {
-    });
-
-    // 主光源强度
-    sceneFolder.add(sceneAttributes, "lightIntensity", 0.0, 5.0, 0.01).name("主光源强度").onChange(function (value) {
-    });
-
-    // 环境光颜色
-    sceneFolder.addColor(sceneAttributes, "ambientLightColor").name("环境光颜色").onChange(function (value) {
-    });
-
-    // 环境光强度
-    sceneFolder.add(sceneAttributes, "ambientLightIntensity", 0.0, 5.0, 0.01).name("环境光强度").onChange(function (value) {
-    });
-
-    // 背景色
-    sceneFolder.addColor(sceneAttributes, "backgroundColor").name("背景色").onChange(function (value) {
-      editor.threeCore.renderer.setClearColor(value);
-    });
 
   }
 
