@@ -428,68 +428,50 @@ var MaterialEditor = function (editor) {
   function createMaterialEditor() {
 
     if (meshMaterialFolder !== undefined) {
-
       materialEditorGUI.removeFolder(meshMaterialFolder);
       meshMaterialFolder = undefined;
-
     }
 
     meshMaterialFolder = materialEditorGUI.addFolder("通用材质属性");
 
     // 材质属性 透明
     meshMaterialFolder.add(materialAttributes, "transparent").name("透明").onChange(function (value) {
-
       currentMaterial.transparent = value;
-
     });
 
     // 材质属性 透明度
     meshMaterialFolder.add(materialAttributes, "opacity", 0.0, 1.0, 0.01).name("透明度").onChange(function (value) {
-
       currentMaterial.opacity = value;
-
     });
 
     // 材质属性 透明测试
     meshMaterialFolder.add(materialAttributes, "alphaTest", 0.0, 0.99, 0.01).name("透明测试").onChange(function (value) {
-
       currentMaterial.alphaTest = value;
       currentMaterial.needsUpdate = true;
-
     });
 
     // 材质属性 渲染面
     meshMaterialFolder.add(materialAttributes, "side", ["正面", "反面", "双面"]).name("渲染面").onChange(function (value) {
-
       switch (value) {
-
         case "正面": currentMaterial.side = THREE.FrontSide; break;
         case "反面": currentMaterial.side = THREE.BackSide; break;
         case "双面": currentMaterial.side = THREE.DoubleSide; break;
-
       }
-
     });
 
     // 材质属性 深度测试
     meshMaterialFolder.add(materialAttributes, "depthTest").name("深度测试").onChange(function (value) {
-
       currentMaterial.depthTest = value;
-
     });
 
     // 材质属性 深度写入
     meshMaterialFolder.add(materialAttributes, "depthWrite").name("深度写入").onChange(function (value) {
-
       currentMaterial.depthWrite = value;
-
     });
 
     // 材质属性 可视
     meshMaterialFolder.add(materialAttributes, "visible").name("可视").onChange(function (value) {
-
       currentMaterial.visible = value;
-
     });
 
   }
@@ -502,10 +484,8 @@ var MaterialEditor = function (editor) {
   function createBasicMaterialEditor(data) {
 
     if (meshBasicMaterialFolder !== undefined) {
-
       materialEditorGUI.removeFolder(meshBasicMaterialFolder);
       meshBasicMaterialFolder = undefined;
-
     }
 
     if (data.type !== "MeshBasicMaterial") { return; }
@@ -522,10 +502,8 @@ var MaterialEditor = function (editor) {
   function createLambertMaterialEditor(data) {
 
     if (meshLambertMaterialFolder !== undefined) {
-
       materialEditorGUI.removeFolder(meshLambertMaterialFolder);
       meshLambertMaterialFolder = undefined;
-
     }
 
     if (data.type !== "MeshLambertMaterial") { return; }
@@ -542,10 +520,8 @@ var MaterialEditor = function (editor) {
   function createPhongMaterialEditor(data) {
 
     if (meshPhongMaterialFolder !== undefined) {
-
       materialEditorGUI.removeFolder(meshPhongMaterialFolder);
       meshPhongMaterialFolder = undefined;
-
     }
 
     if (data.type !== "MeshPhongMaterial") { return; }
@@ -562,10 +538,8 @@ var MaterialEditor = function (editor) {
   function createStandardMaterialEditor(data) {
 
     if (meshStandardMaterialFolder !== undefined) {
-
       materialEditorGUI.removeFolder(meshStandardMaterialFolder);
       meshStandardMaterialFolder = undefined;
-
     }
 
     if (data.type !== "MeshStandardMaterial") { return; }
@@ -582,10 +556,8 @@ var MaterialEditor = function (editor) {
   function createPhysicalMaterialEditor(data) {
 
     if (meshPhysicalMaterialFolder !== undefined) {
-
       materialEditorGUI.removeFolder(meshPhysicalMaterialFolder);
       meshPhysicalMaterialFolder = undefined;
-
     }
 
     if (data.type !== "MeshPhysicalMaterial") { return; }
@@ -606,9 +578,7 @@ var MaterialEditor = function (editor) {
   function materialAddColor(folder) {
 
     folder.addColor(materialAttributes, "color").name("颜色").onChange(function (value) {
-
       currentMaterial.color.setHex(value);
-
     });
 
   }
@@ -619,9 +589,7 @@ var MaterialEditor = function (editor) {
     if (materialAttributes.type === "MeshBasicMaterial") { return; }
 
     folder.addColor(materialAttributes, "emissive").name("放射光颜色").onChange(function (value) {
-
       currentMaterial.emissive.setHex(value);
-
     });
 
   }
@@ -648,9 +616,7 @@ var MaterialEditor = function (editor) {
     if (materialAttributes.type === "MeshBasicMaterial") { return; }
 
     folder.add(materialAttributes, "emissiveIntensity", 0.0, 1.0, 0.01).name("放射光强度").onChange(function (value) {
-
       currentMaterial.emissiveIntensity = value;
-
     });
 
   }
@@ -663,9 +629,7 @@ var MaterialEditor = function (editor) {
     if (materialAttributes.type === "MeshPhongMaterial") { return; }
 
     folder.add(materialAttributes, "roughness", 0.0, 1.0, 0.01).name("粗糙度").onChange(function (value) {
-
       currentMaterial.roughness = value;
-
     });
 
   }
@@ -678,9 +642,7 @@ var MaterialEditor = function (editor) {
     if (materialAttributes.type === "MeshPhongMaterial") { return; }
 
     folder.add(materialAttributes, "metalness", 0.0, 1.0, 0.01).name("金属度").onChange(function (value) {
-
       currentMaterial.metalness = value;
-
     });
 
   }
@@ -712,9 +674,7 @@ var MaterialEditor = function (editor) {
     if (materialAttributes.type === "MeshStandardMaterial") { return; }
 
     folder.add(materialAttributes, "clearCoat", 0.0, 1.0, 0.01).name("清漆").onChange(function (value) {
-
       currentMaterial.clearCoat = value;
-
     });
 
   }
@@ -728,9 +688,7 @@ var MaterialEditor = function (editor) {
     if (materialAttributes.type === "MeshStandardMaterial") { return; }
 
     folder.add(materialAttributes, "clearCoatRoughness", 0.0, 1.0, 0.01).name("清漆粗糙度").onChange(function (value) {
-
       currentMaterial.clearCoatRoughness = value;
-
     });
 
   }
@@ -772,9 +730,7 @@ var MaterialEditor = function (editor) {
     if (materialAttributes.type === "MeshPhysicalMaterial") { return; }
 
     folder.addColor(materialAttributes, "specular").name("高光颜色").onChange(function (value) {
-
       currentMaterial.specular.setHex(value);
-
     });
 
   }
@@ -788,9 +744,7 @@ var MaterialEditor = function (editor) {
     if (materialAttributes.type === "MeshPhysicalMaterial") { return; }
 
     folder.add(materialAttributes, "shininess", 0.0, 100.0, 0.1).name("高光强度").onChange(function (value) {
-
       currentMaterial.shininess = value;
-
     });
 
   }
@@ -870,9 +824,7 @@ var MaterialEditor = function (editor) {
     if (materialAttributes.type === "MeshPhongMaterial") { return; }
 
     folder.add(materialAttributes, "envMapIntensity", 0.0, 1.0, 0.01).name("环境贴图强度").onChange(function (value) {
-
       currentMaterial.envMapIntensity = value;
-
     });
 
   }
@@ -886,11 +838,9 @@ var MaterialEditor = function (editor) {
     folder.add(materialAttributes, "combine", ["相乘", "混合", "相加"]).name("环境贴图结合方式").onChange(function (value) {
 
       switch (value) {
-
         case "相乘": currentMaterial.combine = THREE.Multiply; break;
         case "混合": currentMaterial.combine = THREE.MixOperation; break;
         case "相加": currentMaterial.combine = THREE.AddOperation; break;
-
       }
 
       currentMaterial.needsUpdate = true;
@@ -905,9 +855,7 @@ var MaterialEditor = function (editor) {
     if (materialAttributes.type === "MeshStandardMaterial") { return; }
 
     folder.add(materialAttributes, "reflectivity", 0.0, 1.0, 0.01).name("反射率").onChange(function (value) {
-
       currentMaterial.reflectivity = value;
-
     });
 
   }
@@ -930,9 +878,7 @@ var MaterialEditor = function (editor) {
   function materialAddAoMapIntensity(folder) {
 
     folder.add(materialAttributes, "aoMapIntensity", 0.0, 1.0, 0.01).name("环境遮挡效果强度").onChange(function (value) {
-
       currentMaterial.aoMapIntensity = value;
-
     });
 
   }
@@ -955,9 +901,7 @@ var MaterialEditor = function (editor) {
   function materialAddLightMapIntensity(folder) {
 
     folder.add(materialAttributes, "lightMapIntensity", 0.0, 1.0, 0.01).name("光照贴图强度").onChange(function (value) {
-
       currentMaterial.lightMapIntensity = value;
-
     });
 
   }
@@ -966,9 +910,7 @@ var MaterialEditor = function (editor) {
   function materialAddRefractionRatio(folder) {
 
     folder.add(materialAttributes, "refractionRatio", 0.0, 1.0, 0.01).name("折射率").onChange(function (value) {
-
       currentMaterial.refractionRatio = value;
-
     });
 
   }
