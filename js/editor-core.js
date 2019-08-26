@@ -161,12 +161,6 @@ var MaterialEditor = function (editor) {
 
       if (!child.isMesh) { return; }
 
-      if (child.material.name === "Carpaint_M") {
-
-        child.material.opacity = 0.1;
-
-      }
-
       objectList[child.name] = child;
       objectNameList.push(child.name);
 
