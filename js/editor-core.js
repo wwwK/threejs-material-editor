@@ -185,10 +185,8 @@ var MaterialEditor = function (editor) {
 
     // 刷新材质名称控件
     if (materialNameController !== undefined) {
-
       materialListFolder.remove(materialNameController);
       materialNameController = undefined;
-
     }
 
     // 添加名称
@@ -208,10 +206,8 @@ var MaterialEditor = function (editor) {
 
     // 刷新材质类型控件
     if (materialTypeController !== undefined) {
-
       materialListFolder.remove(materialTypeController);
       materialTypeController = undefined;
-
     }
 
     var materialType = ["MeshBasicMaterial", "MeshLambertMaterial", "MeshPhongMaterial", "MeshStandardMaterial", "MeshPhysicalMaterial"];
@@ -222,13 +218,11 @@ var MaterialEditor = function (editor) {
 
       // 创建新材质
       switch (value) {
-
         case "MeshBasicMaterial": currentMaterial = new THREE.MeshBasicMaterial(); break;
         case "MeshLambertMaterial": currentMaterial = new THREE.MeshLambertMaterial(); break;
         case "MeshPhongMaterial": currentMaterial = new THREE.MeshPhongMaterial(); break;
         case "MeshStandardMaterial": currentMaterial = new THREE.MeshStandardMaterial(); break;
         case "MeshPhysicalMaterial": currentMaterial = new THREE.MeshPhysicalMaterial(); break;
-
       }
 
       currentMaterial.name = materialAttributes.name;
@@ -236,11 +230,8 @@ var MaterialEditor = function (editor) {
 
       // 刷新材质到对象
       currentObject.traverse(function (child) {
-
         if (child.isMesh && child.material.name !== materialAttributes.name) { return; }
-
         child.material = currentMaterial;
-
       });
 
       updateCurrentMaterial2Attributes();
