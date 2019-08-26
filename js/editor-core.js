@@ -155,8 +155,12 @@ var MaterialEditor = function (editor) {
 
   // 导入纹理
   self.importTexture = function (texture) {
+
     textureList[texture.name] = texture;
     textureNameList.push(texture.name);
+
+    editor.signals.createMaterialEditor.dispatch({ name: materialAttributes.name, type: materialAttributes.type });
+
   };
 
   /*********************************************/
