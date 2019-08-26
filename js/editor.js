@@ -1,12 +1,6 @@
 var Editor = function () {
 
-  var self = this; self.isDebug = true; self.signals = {};
-
-  var threeCore, stats;
-
-  /*********************************************/
-  /* 初始化                                     */
-  /*********************************************/
+  var self = this, threeCore, materialEditor; self.signals = {};
 
   self.init = function () {
 
@@ -17,12 +11,7 @@ var Editor = function () {
     materialEditor = self.materialEditor = new MaterialEditor(self);
 
     signalsInit();
-
     self.signals.inited.dispatch();
-
-    // 性能监视器
-    // stats = new Stats();
-    // document.body.appendChild(stats.dom);
 
     // 监听文件拖放
     threeCore.container.addEventListener('drop', dropHandler);
@@ -54,8 +43,6 @@ var Editor = function () {
 
     threeCore.renderer.render(threeCore.scene, threeCore.camera); // 渲染更新
 
-    // stats.update(); // 性能监视器更新
-
   }
 
   /*********************************************/
@@ -65,20 +52,14 @@ var Editor = function () {
   function dragoverHandler(event) { event.preventDefault(); }
 
   function dropHandler(event) {
-
     event.preventDefault();
-
     loadFiles(event.dataTransfer.files);
-
   }
 
   // 加载文件
   function loadFiles(files) {
-
     if (files.length === 0) { return; }
-
     for (var i = 0; i < files.length; i++) { loadFile(files[i]); }
-
   }
 
   // 加载文件识别并处理
@@ -89,89 +70,64 @@ var Editor = function () {
 
     var reader = new FileReader();
 
-    // JSON文件（模型）
-    if (extension === "json") {
-
+    // 读取 JSON Object
+    var readObject = function () {
       reader.addEventListener("load", function (event) {
         importObjectHandler(file, event.target.result);
-      }, false);
+      }, false); reader.readAsText(file);
+    };
 
-      reader.readAsText(file);
-
-      return;
-
-    }
-
-    // FBX文件（模型）
-    if (extension === "fbx") {
-
+    // 读取 FBX/Drcobj
+    var readFBXOrDrcobj = function () {
       reader.addEventListener("load", function (event) {
-        importFBXObjectHandler(file, event.target.result);
-      }, false);
+        if (extension === "fbx") {
+          importFBXObjectHandler(file, event.target.result);
+        }
+        else if (extension === "drcobj") {
+          importDrcobjHandler(file, event.target.result);
+        }
+      }, false); reader.readAsArrayBuffer(file);
+    };
 
-      reader.readAsArrayBuffer(file);
-
-      return;
-
-    }
-
-    // DRCOBJ文件（模型）
-    if (extension === "drcobj") {
-
-      reader.addEventListener("load", function (event) {
-        importDrcobjHandler(file, event.target.result);
-      }, false);
-
-      reader.readAsArrayBuffer(file);
-
-      return;
-
-    }
-
-    // JPG/PNG（图片文件）
-    if (extension === 'jpg' || extension === 'png') {
-
+    // 读取纹理
+    var readTexture = function () {
       reader.addEventListener("load", function (event) {
         importTextureHandler(file, event.target.result);
-      }, false);
+      }, false); reader.readAsDataURL(file);
+    };
 
-      reader.readAsDataURL(file);
-
-      return;
-
+    switch (extension) {
+      case "json":
+        readObject(); break;
+      case "fbx":
+      case "drcobj":
+        readFBXOrDrcobj(); break;
+      case "jpg":
+      case "png":
+        readTexture(); break;
+      default: break;
     }
 
   }
 
   // 处理JSON对象文件
   function importObjectHandler(file, data) {
-
     var objectJson = JSON.parse(data);
-
     var object = threeCore.objectLoader.parse(objectJson);
-
     self.signals.objectImport.dispatch(object);
-
   }
 
   // 处理FBX对象文件
   function importFBXObjectHandler(file, data) {
-
     var object = threeCore.fbxLoader.parse(data);
-
     self.signals.objectImport.dispatch(object);
-
   }
 
   // 处理DRCOBJ对象文件
   function importDrcobjHandler(file, data) {
-
     threeCore.drcobjLoader.parse(data, function (object) {
-
       self.signals.objectImport.dispatch(object);
-
     });
-
   }
 
   // 处理纹理文件
@@ -188,9 +144,7 @@ var Editor = function () {
 
       self.signals.textureImport.dispatch(texture);
 
-    }, false);
-
-    image.src = data;
+    }, false); image.src = data;
 
   }
 
