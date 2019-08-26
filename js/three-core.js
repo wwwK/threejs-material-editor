@@ -1,12 +1,9 @@
 var ThreeCore = function () {
 
   var self = this;
-
-  var container, renderer, composer;
-  var sky, scene, light, aidLight, ambientLight, lightInfo;
+  var container, renderer;
+  var sky, scene, light, ambientLight;
   var camera, cameraController;
-
-  var fileLoader, objectLoader, drcobjLoader, textureLoader, cubeTextureLoader;
 
   // 初始化
   self.init = function () {
@@ -52,7 +49,6 @@ var ThreeCore = function () {
     cameraController.maxPolarAngle = Math.PI * 0.45;
 
     cameraController.update(); // 首次更正相机控制器
-
     renderer.render(scene, camera); // 首次画面渲染
 
     initLoader(); // 初始化加载器
@@ -61,31 +57,24 @@ var ThreeCore = function () {
 
   // 初始化加载器
   function initLoader() {
-
-    fileLoader = self.fileLoader = new THREE.FileLoader();
-    objectLoader = self.objectLoader = new THREE.ObjectLoader();
-    fbxLoader = self.fbxLoader = new THREE.FBXLoader();
-    drcobjLoader = self.drcobjLoader= new THREE.DrcobjLoader();
-    materialLoader = self.materialLoader = new THREE.MaterialLoader();
-    textureLoader = self.textureLoader = new THREE.TextureLoader();
-
+    self.fileLoader = new THREE.FileLoader();
+    self.objectLoader = new THREE.ObjectLoader();
+    self.fbxLoader = new THREE.FBXLoader();
+    self.drcobjLoader = new THREE.DrcobjLoader();
+    self.materialLoader = new THREE.MaterialLoader();
+    self.textureLoader = new THREE.TextureLoader();
   }
 
   // 重置渲染区域
   self.resizeRenderArea = function () {
-
     camera.aspect = document.documentElement.clientWidth / document.documentElement.clientHeight;
     renderer.setSize(document.documentElement.clientWidth, document.documentElement.clientHeight);
-
     camera.updateProjectionMatrix();
-
   };
 
   // 设置帧更新
   self.setUpdate = function () {
-
     renderer.setAnimationLoop(this.update);
-
   };
 
 };
