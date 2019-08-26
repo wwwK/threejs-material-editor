@@ -164,13 +164,12 @@ var MaterialEditor = function (editor) {
     objectController = objectListFolder.add(objectAttributes, "object", objectNameList);
     objectController.name("对象").onChange(function (value) {
 
-      currentObject = objectList[value];
       currentMaterial = materialList[currentObject.material.name];
 
       materialAttributes.name = currentMaterial.name;
-      materialAttributes.type = currentMaterial.type;
-
       materialNameController.updateDisplay();
+
+      materialAttributes.type = currentMaterial.type;
       materialTypeController.updateDisplay();
 
       updateCurrentMaterial2Attributes();
