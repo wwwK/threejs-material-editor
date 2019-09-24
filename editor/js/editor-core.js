@@ -45,7 +45,7 @@ var MaterialEditor = function (editor) {
 
     objectListFolder = materialEditorGUI.addFolder("对象列表");
     materialListFolder = materialEditorGUI.addFolder("材质列表");
-    textureFolder = materialEditorGUI.addFolder("纹理列表");
+    // textureFolder = materialEditorGUI.addFolder("纹理列表");
 
     // materialEditorGUI.close();
 
