@@ -56,7 +56,7 @@ var materialAttributes = {
 
     envMap: "none",       // 环境贴图
     envMapIntensity: 0.0, // 环境贴图强度 Standard
-    combine: "混合",      // 环境贴图结合方式 !Standard|Physical
+    combine: "混合",      // 环境贴图合并方式 !Standard|Physical
     reflectivity: 1.0,    // 反射率 !Standard Physical
 
     aoMap: "none",          // 环境光遮蔽贴图（AO）
