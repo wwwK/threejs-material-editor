@@ -40,7 +40,7 @@ var MaterialEditor = function (editor) {
     materialEditorGUI = self.materialEditorGUI = new dat.GUI();
     materialEditorGUI.width = 320;
 
-    sceneFolder = materialEditorGUI.addFolder("场景属性（部分功能暂不可用）");
+    sceneFolder = materialEditorGUI.addFolder("场景属性");
     createSceneOption();
 
     objectListFolder = materialEditorGUI.addFolder("对象列表");
@@ -59,18 +59,22 @@ var MaterialEditor = function (editor) {
 
     // 主光源颜色
     sceneFolder.addColor(sceneAttributes, "lightColor").name("主光源颜色").onChange(function (value) {
+      editor.threeCore.light.color.setHex(value);
     });
 
     // 主光源强度
     sceneFolder.add(sceneAttributes, "lightIntensity", 0.0, 5.0, 0.01).name("主光源强度").onChange(function (value) {
+      editor.threeCore.light.intensity = value;
     });
 
     // 环境光颜色
     sceneFolder.addColor(sceneAttributes, "ambientLightColor").name("环境光颜色").onChange(function (value) {
+      editor.threeCore.ambientLight.color.setHex(value);
     });
 
     // 环境光强度
     sceneFolder.add(sceneAttributes, "ambientLightIntensity", 0.0, 5.0, 0.01).name("环境光强度").onChange(function (value) {
+      editor.threeCore.ambientLight.intensity = value;
     });
 
     // 背景色
@@ -159,6 +163,7 @@ var MaterialEditor = function (editor) {
     textureList[texture.name] = texture;
     textureNameList.push(texture.name);
 
+    // 导入纹理时刷新编辑器各项纹理列表
     editor.signals.createMaterialEditor.dispatch({ name: materialAttributes.name, type: materialAttributes.type });
 
   };
@@ -276,18 +281,18 @@ var MaterialEditor = function (editor) {
     // 颜色
     materialAttributes.color = currentMaterial.color.getHex();
 
-    // 放射光颜色
+    // 自发光颜色
     if (currentMaterial.type !== "MeshBasicMaterial") {
       materialAttributes.emissive = currentMaterial.emissive.getHex();
     }
 
-    // 放射光贴图
+    // 自发光贴图
     if (currentMaterial.type !== "MeshBasicMaterial") {
       materialAttributes.emissiveMap = "none";
       if (currentMaterial.emissiveMap) { materialAttributes.emissiveMap = currentMaterial.emissiveMap.name; }
     }
 
-    // 放射光强度
+    // 自发光强度
     if (currentMaterial.type !== "MeshBasicMaterial") {
       materialAttributes.emissiveIntensity = currentMaterial.emissiveIntensity;
     }
@@ -583,23 +588,23 @@ var MaterialEditor = function (editor) {
 
   }
 
-  // 添加 放射光
+  // 添加 自发光
   function materialAddEmissive(folder) {
 
     if (materialAttributes.type === "MeshBasicMaterial") { return; }
 
-    folder.addColor(materialAttributes, "emissive").name("放射光颜色").onChange(function (value) {
+    folder.addColor(materialAttributes, "emissive").name("自发光颜色").onChange(function (value) {
       currentMaterial.emissive.setHex(value);
     });
 
   }
 
-  // 添加 放射光贴图
+  // 添加 自发光贴图
   function materialAddEmissiveMap(folder) {
 
     if (materialAttributes.type === "MeshBasicMaterial") { return; }
 
-    folder.add(materialAttributes, "emissiveMap", textureNameList).name("放射光贴图").onChange(function (value) {
+    folder.add(materialAttributes, "emissiveMap", textureNameList).name("自发光贴图").onChange(function (value) {
 
       if (value === "none") { currentMaterial.emissiveMap = undefined; currentMaterial.needsUpdate = true; return; }
 
@@ -610,12 +615,12 @@ var MaterialEditor = function (editor) {
 
   }
 
-  // 添加 放射光强度
+  // 添加 自发光强度
   function materialAddEmissiveIntensity(folder) {
 
     if (materialAttributes.type === "MeshBasicMaterial") { return; }
 
-    folder.add(materialAttributes, "emissiveIntensity", 0.0, 1.0, 0.01).name("放射光强度").onChange(function (value) {
+    folder.add(materialAttributes, "emissiveIntensity", 0.0, 1.0, 0.01).name("自发光强度").onChange(function (value) {
       currentMaterial.emissiveIntensity = value;
     });
 
