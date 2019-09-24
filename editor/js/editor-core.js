@@ -11,6 +11,10 @@ var MaterialEditor = function (editor) {
 
   self.functionOptions = {
 
+    reload: function () {
+      location.reload();
+    },
+
     save: function () {
       saveString(JSON.stringify(currentObject.toJSON()), "model.json");
     },
