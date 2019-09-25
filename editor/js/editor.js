@@ -14,8 +14,8 @@ var Editor = function () {
     self.signals.inited.dispatch();
 
     // 监听文件拖放
-    threeCore.container.addEventListener('drop', dropHandler);
-    threeCore.container.addEventListener('dragover', dragoverHandler);
+    threeCore.container.addEventListener("drop", dropHandler);
+    threeCore.container.addEventListener("dragover", dragoverHandler);
 
     // 监听窗口调整
     window.addEventListener("resize", threeCore.resizeRenderArea, false);
@@ -133,13 +133,13 @@ var Editor = function () {
   // 处理纹理文件
   function importTextureHandler(file, data) {
 
-    var image = document.createElement('img');
+    var image = document.createElement("img");
 
-    image.addEventListener('load', function (event) {
+    image.addEventListener("load", function (event) {
 
       var texture = new THREE.Texture(this);
       texture.name = file.name;
-      texture.format = file.type === 'image/jpeg' ? THREE.RGBFormat : THREE.RGBAFormat;
+      texture.format = file.type === "image/jpeg" ? THREE.RGBFormat : THREE.RGBAFormat;
       texture.needsUpdate = true;
 
       self.signals.textureImport.dispatch(texture);

@@ -16,10 +16,12 @@ var MaterialEditor = function (editor) {
     },
 
     save: function () {
+      if (currentObject === undefined) { alert("未找到可导出对象。"); return; }
       saveString(JSON.stringify(currentObject.toJSON()), "model.json");
     },
 
     save_drcobj: function () {
+      if (currentObject === undefined) { alert("未找到可导出对象。"); return; }
       saveArrayBuffer((new THREE.DrcobjExporter()).parse(currentObject.toJSON(), { quantization: [16, 16, 16, 16, 16] }), "model.drcobj");
     },
 
