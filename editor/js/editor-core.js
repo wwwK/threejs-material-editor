@@ -12,7 +12,7 @@ var MaterialEditor = function (editor) {
   self.functionOptions = {
 
     reload: function () {
-      location.reload();
+      if (confirm("确认新建？")) { location.reload(); }
     },
 
     save: function () {
