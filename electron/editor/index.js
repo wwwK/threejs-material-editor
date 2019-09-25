@@ -15,7 +15,7 @@ function createWindow() { // 创建窗口
     });
 
     // 加载页面
-    mainWindow.loadFile("./editor/index.html");
+    mainWindow.loadFile("index.html");
 
     // 当页面准备完成后显示
     mainWindow.once("ready-to-show", function () { mainWindow.show(); });
