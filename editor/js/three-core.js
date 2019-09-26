@@ -51,20 +51,13 @@ var ThreeCore = function () {
     cameraController.update(); // 首次更正相机控制器
     renderer.render(scene, camera); // 首次画面渲染
 
-    initLoader(); // 初始化加载器
-
-  };
-
-  // 初始化加载器
-  function initLoader() {
+    // 初始化加载器
     self.fileLoader = new THREE.FileLoader();
     self.objectLoader = new THREE.ObjectLoader();
-    self.fbxLoader = new THREE.FBXLoader();
-    self.gltfLoader = new THREE.GLTFLoader();
-    self.drcobjLoader = new THREE.DrcobjLoader();
     self.materialLoader = new THREE.MaterialLoader();
     self.textureLoader = new THREE.TextureLoader();
-  }
+
+  };
 
   // 重置渲染区域
   self.resizeRenderArea = function () {
