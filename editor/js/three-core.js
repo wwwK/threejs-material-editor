@@ -60,6 +60,7 @@ var ThreeCore = function () {
     self.fileLoader = new THREE.FileLoader();
     self.objectLoader = new THREE.ObjectLoader();
     self.fbxLoader = new THREE.FBXLoader();
+    self.gltfLoader = new THREE.GLTFLoader();
     self.drcobjLoader = new THREE.DrcobjLoader();
     self.materialLoader = new THREE.MaterialLoader();
     self.textureLoader = new THREE.TextureLoader();

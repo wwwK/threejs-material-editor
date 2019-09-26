@@ -77,11 +77,14 @@ var Editor = function () {
       }, false); reader.readAsText(file);
     };
 
-    // 读取 FBX/Drcobj
-    var readFBXOrDrcobj = function () {
+    // 读取 FBX/GLTF/Drcobj
+    var readObjectTF = function () {
       reader.addEventListener("load", function (event) {
         if (extension === "fbx") {
           importFBXObjectHandler(file, event.target.result);
+        }
+        else if (extension === "gltf" || extension === "glb") {
+          importGLTFObjectHandler(file, event.target.result);
         }
         else if (extension === "drcobj") {
           importDrcobjHandler(file, event.target.result);
@@ -97,15 +100,18 @@ var Editor = function () {
     };
 
     switch (extension) {
+
       case "json":
         readObject(); break;
-      case "fbx":
-      case "drcobj":
-        readFBXOrDrcobj(); break;
-      case "jpg":
-      case "png":
+
+      case "fbx": case "gltf": case "glb": case "drcobj":
+        readObjectTF(); break;
+
+      case "jpg": case "png":
         readTexture(); break;
+
       default: break;
+
     }
 
   }
@@ -121,6 +127,13 @@ var Editor = function () {
   function importFBXObjectHandler(file, data) {
     var object = threeCore.fbxLoader.parse(data);
     self.signals.objectImport.dispatch(object);
+  }
+
+  // 处理GLTF对象文件
+  function importGLTFObjectHandler(file, data) {
+    threeCore.gltfLoader.parse(data, undefined, function (gltf) {
+      self.signals.objectImport.dispatch(gltf.scene, true);
+    });
   }
 
   // 处理DRCOBJ对象文件

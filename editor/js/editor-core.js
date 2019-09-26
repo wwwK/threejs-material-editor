@@ -1,6 +1,6 @@
 var MaterialEditor = function (editor) {
 
-  var self = this;
+  var self = this; var isGLTF = false;
   var currentObject, objectList = {}, objectNameList = [];
   var currentMaterial, materialList = {}, materialNameList = [];
   var currentTexture, textureList = {}, textureNameList = ["none"];
@@ -18,6 +18,11 @@ var MaterialEditor = function (editor) {
     save: function () {
       if (currentObject === undefined) { alert("未找到可导出对象。"); return; }
       saveString(JSON.stringify(currentObject.toJSON()), "model.json");
+    },
+
+    save_gltf: function () {
+      if (currentObject === undefined) { alert("未找到可导出对象。"); return; }
+      (new THREE.GLTFExporter()).parse(currentObject, function (gltf) { saveArrayBuffer(gltf, "model.glb"); }, { binary: true });
     },
 
     save_drcobj: function () {
@@ -137,9 +142,13 @@ var MaterialEditor = function (editor) {
   /*********************************************/
 
   // 导入对象
-  self.importObject = function (object) {
+  self.importObject = function (object, is_gltf) {
 
     currentObject = object;
+
+    // if (isGLTF === undefined) { isGLTF = false; } isGLTF = is_gltf;
+
+    // setGLTFRendererGamma(); // 设置渲染器伽马校正
 
     // 写入数据
     object.traverse(function (child) {
@@ -167,6 +176,8 @@ var MaterialEditor = function (editor) {
   // 导入纹理
   self.importTexture = function (texture) {
 
+    // if (isGLTF) { texture.encoding = THREE.sRGBEncoding; texture.flipY = false; }
+
     textureList[texture.name] = texture;
     textureNameList.push(texture.name);
 
@@ -174,6 +185,12 @@ var MaterialEditor = function (editor) {
     editor.signals.createMaterialEditor.dispatch({ name: materialAttributes.name, type: materialAttributes.type });
 
   };
+
+  function setGLTFRendererGamma() {
+    if (!isGLTF) { return; }
+    editor.threeCore.renderer.gammaOutput = true;
+    editor.threeCore.renderer.gammaFactor = 2.2;
+  }
 
   /*********************************************/
   /* 对象和材质选择控制器                        */
