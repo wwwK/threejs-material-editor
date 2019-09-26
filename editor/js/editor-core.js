@@ -1,7 +1,7 @@
 var MaterialEditor = function (editor) {
 
   var self = this; var isGLTF = false;
-  var currentObject, objectList = {}, objectNameList = [];
+  var currentObject, objectList = {}, objectNameList = [], boxHelper;
   var currentMaterial, materialList = {}, materialNameList = [];
   var currentTexture, textureList = {}, textureNameList = ["none"];
 
@@ -146,6 +146,8 @@ var MaterialEditor = function (editor) {
 
     currentObject = object;
 
+    autoCameraDistance(currentObject); // 摄像机距离自动适配
+
     // if (isGLTF === undefined) { isGLTF = false; } isGLTF = is_gltf;
 
     // setGLTFRendererGamma(); // 设置渲染器伽马校正
@@ -192,6 +194,20 @@ var MaterialEditor = function (editor) {
     editor.threeCore.renderer.gammaFactor = 2.2;
   }
 
+  function autoCameraDistance(object) {
+
+    var objectBox3 = new THREE.Box3().setFromObject(object);
+
+    var minPointDis = objectBox3.min.distanceTo(new THREE.Vector3(0, 0, 0));
+    var maxPointDis = objectBox3.max.distanceTo(new THREE.Vector3(0, 0, 0));
+    var maxDis = Math.max(minPointDis, maxPointDis);
+
+    editor.threeCore.cameraController.minDistance = maxDis * 0.5;
+    editor.threeCore.cameraController.maxDistance = maxDis * 5;
+    editor.threeCore.camera.position.set(maxDis * 2, maxDis * 2, -(maxDis * 2));
+
+  }
+
   /*********************************************/
   /* 对象和材质选择控制器                        */
   /*********************************************/
@@ -216,6 +232,11 @@ var MaterialEditor = function (editor) {
       materialTypeController.updateDisplay();
 
       updateCurrentMaterial2Attributes();
+
+      // 对象选中框
+      var objectBox3 = new THREE.Box3().setFromObject(objectList[value]);
+      if (boxHelper === undefined) { boxHelper = new THREE.Box3Helper(objectBox3, 0xFFFF00); editor.threeCore.scene.add(boxHelper); }
+      boxHelper.box = objectBox3;
 
       editor.signals.createMaterialEditor.dispatch({ name: materialAttributes.name, type: materialAttributes.type });
 

@@ -19,6 +19,9 @@ function createWindow() { // 创建窗口
     // 当页面准备完成后显示
     mainWindow.once("ready-to-show", function () { mainWindow.show(); });
 
+    // 打开开发者工具
+    // mainWindow.webContents.openDevTools();
+
     // 关闭菜单栏
     Menu.setApplicationMenu(null);
 

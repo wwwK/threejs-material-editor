@@ -33,13 +33,14 @@ var ThreeCore = function () {
     scene.add(ambientLight);
 
     // 摄像机
-    camera = self.camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 1, 3000);
-    camera.position.set(0, 0, -800);
+    camera = self.camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 1, 10000);
+    camera.position.set(30, 30, -30);
     camera.lookAt(scene.position);
 
     // 摄像机控制器
     cameraController = self.cameraController = new THREE.OrbitControls(camera, renderer.domElement);
-    cameraController.enablePan = false;
+    cameraController.enablePan = true;
+    cameraController.panSpeed = 0.02;
     cameraController.enableDamping = true;
     cameraController.dampingFactor = 0.05;
     cameraController.rotateSpeed = 0.025;
@@ -49,6 +50,11 @@ var ThreeCore = function () {
     cameraController.maxPolarAngle = Math.PI * 0.45;
 
     cameraController.update(); // 首次更正相机控制器
+
+    // 网格辅助线
+    var gridHelper = new THREE.GridHelper(20, 20, new THREE.Color(0x222222), new THREE.Color(0xEEEEEE));
+    scene.add(gridHelper);
+
     renderer.render(scene, camera); // 首次画面渲染
 
     // 初始化加载器
