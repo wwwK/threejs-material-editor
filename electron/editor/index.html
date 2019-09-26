@@ -6,38 +6,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>ThreeJS Material Editor</title>
-
-  <link rel="stylesheet" href="https://rawcdn.githack.com/Ouyang-Zhaoxing/threejs-material-editor/master/editor/css/theme-dark.css">
+  <title>ThreeJS Material Editor</title> <link rel="stylesheet" href="./css/theme-dark.css">
 
 </head>
 
 <body>
-
-  <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r106/build/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r106/examples/js/controls/OrbitControls.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r106/examples/js/loaders/FBXLoader.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r106/examples/js/loaders/GLTFLoader.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r106/examples/js/exporters/GLTFExporter.js"></script>
-
-  <script src="https://cdn.jsdelivr.net/gh/Ouyang-Zhaoxing/drcobj@v0.9.6.1-pre/src/vendor/draco_encoder.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/Ouyang-Zhaoxing/drcobj@v0.9.6.1-pre/src/vendor/draco_exporter.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/Ouyang-Zhaoxing/drcobj@v0.9.6.1-pre/src/js/drcobj_exporter.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/Ouyang-Zhaoxing/drcobj@v0.9.6.1-pre/src/vendor/draco_decoder.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/Ouyang-Zhaoxing/drcobj@v0.9.6.1-pre/src/vendor/draco_loader.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/Ouyang-Zhaoxing/drcobj@v0.9.6.1-pre/src/js/drcobj_loader.js"></script>
-
-  <script src="https://cdn.jsdelivr.net/gh/imaya/zlib.js@0.3.1/bin/zlib.min.js"></script>
-
-  <script src="https://rawcdn.githack.com/Ouyang-Zhaoxing/threejs-material-editor/master/editor/js/vendor/dat.gui.js"></script>
-  <script src="https://rawcdn.githack.com/Ouyang-Zhaoxing/threejs-material-editor/master/editor/js/utils.js"></script>
-
-  <script src="https://rawcdn.githack.com/Ouyang-Zhaoxing/threejs-material-editor/master/editor/js/three-core.js"></script>
-  <script src="https://rawcdn.githack.com/Ouyang-Zhaoxing/threejs-material-editor/master/editor/js/material-attributes.js"></script>
-  <script src="https://rawcdn.githack.com/Ouyang-Zhaoxing/threejs-material-editor/master/editor/js/editor-core.js"></script>
-  <script src="https://rawcdn.githack.com/Ouyang-Zhaoxing/threejs-material-editor/master/editor/js/editor.js"></script>
-
-  </script>
 
   <div id="editor_canvas" class="editor_canvas"></div>
 
@@ -67,7 +40,46 @@
 
   </div>
 
-  <script> var signals = require('signals'); var editor = new Editor(); editor.init(); </script>
+  <script src="./js/vendor/three.min.js"></script>
+  <script src="./js/vendor/OrbitControls.js"></script>
+  <script src="./js/vendor/dat.gui.js"></script>
+
+  <script src="./js/three-core.js"></script>
+  <script src="./js/material-attributes.js"></script>
+  <script src="./js/editor-core.js"></script>
+  <script src="./js/editor.js"></script>
+
+  <!-- 开始执行 -->
+  <script>
+
+    var signals = require('signals');
+    var editor = new Editor(); editor.init();
+
+    function initLoader(loader) {
+      switch (loader) {
+        case 'drcobj': editor.threeCore.drcobjLoader = new THREE.DrcobjLoader(); break;
+        case 'fbx': editor.threeCore.fbxLoader = new THREE.FBXLoader(); break;
+        case 'gltf': editor.threeCore.gltfLoader = new THREE.GLTFLoader(); break;
+        default: break;
+      }
+    }
+
+  </script>
+
+  <!-- 后置加载 -->
+  <script async src="./js/vendor/draco_decoder.js"></script>
+  <script async src="./js/vendor/draco_loader.js"></script>
+  <script async src="./js/vendor/drcobj_loader.js" onload="initLoader('drcobj');"></script>
+  <script async src="./js/vendor/FBXLoader.js" onload="initLoader('fbx');"></script>
+  <script async src="./js/vendor/GLTFLoader.js" onload="initLoader('gltf');"></script>
+
+  <script async src="./js/vendor/GLTFExporter.js"></script>
+  <script async src="./js/vendor/drcobj_exporter.js"></script>
+  <script async src="./js/vendor/draco_encoder.js"></script>
+  <script async src="./js/vendor/draco_exporter.js"></script>
+
+  <script async src="./js/vendor/zlib.min.js"></script>
+  <script async src="./js/utils.js"></script>
 
 </body>
 
