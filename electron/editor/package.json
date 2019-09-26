@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "electron .",
-    "package": "electron-packager . ThreeJS-Material-Editor --platform=win32 --arch=x64 --icon=./icon.ico --out=../editor_build --app-version=0.9.0"
+    "package": "electron-packager . ThreeJS-Material-Editor --platform=win32 --arch=x64 --icon=./icon.ico --out=../editor_build --asar --app-version=0.9.0"
   },
   "author": "Blinking",
   "license": "MIT",
