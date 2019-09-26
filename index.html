@@ -44,21 +44,25 @@
   <div id="editor_canvas" class="editor_canvas"></div>
 
   <div class="editor_tips">
-    <div style="color:#FFF; margin:4px; font-size:12px; opacity:0.8">通过拖放文件导入模型 (JSON/FBX/DRCOBJ) 或贴图 (JPG/PNG)</div>
+    <div style="color:#FFF; margin:2px; font-size:12px; opacity:0.8">通过拖放文件导入模型 (JSON/FBX/DRCOBJ) 或贴图 (JPG/PNG)</div>
   </div>
 
   <div style="position:absolute; top:0px; left:0px; padding:4px;">
 
     <div class="editor_buttom" onclick="editor.materialEditor.functionOptions.reload()">
-      <div style="color:#FFF; margin:4px; font-size:12px; opacity:0.8">新建</div>
+      <div style="color:#FFF; margin:2px; font-size:12px; opacity:0.8">新建</div>
     </div>
 
     <div class="editor_buttom" onclick="editor.materialEditor.functionOptions.save()">
-      <div style="color:#FFF; margin:4px; font-size:12px; opacity:0.8">导出 JSON</div>
+      <div style="color:#FFF; margin:2px; font-size:12px; opacity:0.8">导出 JSON</div>
+    </div>
+
+    <div class="editor_buttom" onclick="editor.materialEditor.functionOptions.save_gltf()">
+      <div style="color:#FFF; margin:2px; font-size:12px; opacity:0.8">导出 GLTF(.glb)</div>
     </div>
 
     <div class="editor_buttom" onclick="editor.materialEditor.functionOptions.save_drcobj()">
-      <div style="color:#FFF; margin:4px; font-size:12px; opacity:0.8">导出 DRCOBJ</div>
+      <div style="color:#FFF; margin:2px; font-size:12px; opacity:0.8">导出 DRCOBJ</div>
     </div>
 
   </div>
