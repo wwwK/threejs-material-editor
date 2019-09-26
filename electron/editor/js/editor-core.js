@@ -35,7 +35,7 @@ var MaterialEditor = function (editor) {
   // 初始化
   self.init = function () {
 
-    createMenu();
+    setTimeout(function () { createMenu(); }, 100);
 
     editor.signals.createMaterialEditor = new signals.Signal();
     editor.signals.addMaterialAttributes = new signals.Signal();

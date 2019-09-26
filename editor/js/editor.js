@@ -25,8 +25,8 @@ var Editor = function () {
   signalsInit = function signalsInit() {
 
     self.signals.inited = new signals.Signal();
-    self.signals.inited.addOnce(materialEditor.init);
     self.signals.inited.addOnce(threeCore.setUpdate, { update: update });
+    self.signals.inited.addOnce(materialEditor.init);
 
     self.signals.objectImport = new signals.Signal();
     self.signals.objectImport.add(materialEditor.importObject);
