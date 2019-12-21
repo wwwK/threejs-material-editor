@@ -1,3 +1,6 @@
 .editor_canvas { position:absolute; top:0px; left:0px; width:100%; height:100%; margin:0px; background-color:#000; overflow:hidden; }
-.editor_buttom { position:relative; margin:4px; padding:4px; border-radius:4px; background:#000; opacity:0.8; float:left; cursor:pointer; }
-.editor_tips { position:absolute; left:10px; bottom:10px; padding:4px; border-radius:3px; background:#000; opacity:0.8; cursor:default; }
+
+.editor_buttom { position:relative; margin:3px; padding:3px; border-radius:4px; text-align:center; max-height:20px; background:#000; opacity:0.8; float:left; cursor:pointer; }
+.editor_text { color:#FFF; margin:2px; font-size:12px; opacity:0.8; float: right; user-select:none;}
+.editor_icon { margin:1px; width:18px; height:18px; overflow:hidden; float:right; pointer-events:none; }
+.editor_tips { position:absolute; left:10px; bottom:10px; padding:3px; border-radius:4px; text-align:center; max-height:20px; background:#000; opacity:0.8; cursor:default; }

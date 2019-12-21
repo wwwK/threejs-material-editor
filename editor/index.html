@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>ThreeJS Material Editor</title>
+  <link rel="shortcut icon" href="./icon.ico">
+  <link rel="stylesheet" href="./css/theme-dark.css">
+
+</head>
+
+<body>
+
+  <div id="editor_canvas" class="editor_canvas"></div> <!-- 3D画布 -->
+
+  <div style="position:absolute; top:0px; left:0px; padding:4px;">
+
+    <div class="editor_buttom" onclick="editor.materialEditor.functionOptions.reload()">
+      <div class="editor_text">新建</div>
+      <embed class="editor_icon" src="./icon/new.svg" type="image/svg+xml">
+    </div>
+
+    <div class="editor_buttom" onclick="editor.materialEditor.functionOptions.export()">
+      <div class="editor_text">导出</div>
+      <embed class="editor_icon" src="./icon/export.svg" type="image/svg+xml">
+    </div>
+
+    <div class="editor_buttom" onclick="editor.materialEditor.functionOptions.setting()">
+      <div class="editor_text">设置</div>
+      <embed class="editor_icon" src="./icon/setting.svg" type="image/svg+xml">
+    </div>
+
+  </div>
+
+  <div class="editor_tips">
+    <div class="editor_text">通过拖放文件导入模型或贴图</div>
+    <embed class="editor_icon" src="./icon/tips.svg" type="image/svg+xml">
+  </div>
+
+  <script src="./js/vendor/js-signals 1.0.0/signals.min.js"></script>
+  <script src="./js/vendor/jquery 3.4.1/jquery-3.4.1.min.js"></script>
+  <script src="./js/vendor/dat.gui 0.6.5/dat.gui.js"></script>
+
+  <script src="./js/vendor/three.js 0.111.0/three.min.js"></script>
+  <script src="./js/vendor/three.js 0.111.0/OrbitControls.min.js"></script>
+
+  <script src="./js/three-core.js"></script>
+  <script src="./js/material-attributes.js"></script>
+  <script src="./js/editor-core.js"></script>
+  <script src="./js/editor.js"></script>
+
+  <!-- 开始执行 -->
+  <script>
+
+    var editor = new Editor(); editor.init();
+
+    function initLoader(loader) {
+
+      switch (loader) {
+
+      case 'drcobj':
+      editor.threeCore.drcobjLoader = new THREE.DrcobjLoader();
+      editor.threeCore.drcobjLoader.setDecoderPath("./js/vendor/drcobj 1.0.1/");
+      break;
+
+      case 'fbx': editor.threeCore.fbxLoader = new THREE.FBXLoader(); break;
+
+      // case 'gltf': editor.threeCore.gltfLoader = new THREE.GLTFLoader(); break;
+
+      default: break;
+
+      }
+
+    }
+
+  </script>
+
+  <!-- 后置加载 -->
+  <script async src="./js/vendor/drcobj 1.0.1/draco_decoder.js"></script>
+  <script async src="./js/vendor/drcobj 1.0.1/draco_loader.js"></script>
+  <script async src="./js/vendor/drcobj 1.0.1/drcobj_loader.min.js" onload="initLoader('drcobj');"></script>
+  <script async src="./js/vendor/three.js 0.111.0/FBXLoader.min.js" onload="initLoader('fbx');"></script>
+  <!-- <script async src="./js/vendor/three.js 0.111.0/GLTFLoader.min.js" onload="initLoader('gltf');"></script> -->
+
+  <!-- <script async src="./js/vendor/three.js 0.111.0/GLTFExporter.min.js"></script> -->
+  <script async src="./js/vendor/drcobj 1.0.1/drcobj_exporter.min.js"></script>
+  <script async src="./js/vendor/drcobj 1.0.1/draco_encoder.js"></script>
+  <script async src="./js/vendor/drcobj 1.0.1/draco_exporter.js"></script>
+
+  <script async src="./js/vendor/zlib.js 0.3.1/zlib.min.js"></script>
+  <script async src="./js/utils.js"></script>
+
+</body>
+
+</html>

@@ -5,13 +5,9 @@ var Editor = function () {
   self.init = function () {
 
     // 3D初始化
-    threeCore = self.threeCore = new ThreeCore();
-    threeCore.init();
+    threeCore = self.threeCore = new ThreeCore(); threeCore.init();
 
     materialEditor = self.materialEditor = new MaterialEditor(self);
-
-    signalsInit();
-    self.signals.inited.dispatch();
 
     // 监听文件拖放
     threeCore.container.addEventListener("drop", dropHandler);
@@ -19,6 +15,9 @@ var Editor = function () {
 
     // 监听窗口调整
     window.addEventListener("resize", threeCore.resizeRenderArea, false);
+
+    signalsInit();
+    self.signals.inited.dispatch();
 
   };
 
