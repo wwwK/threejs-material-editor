@@ -1,3 +1,3 @@
 # THREE.JS 材质编辑器
 
-![dino](https://threejs-material-editor-1251216093.cos.ap-guangzhou.myqcloud.com/editor-dino.jpg)
+已停止更新，issues问题修复支持。
