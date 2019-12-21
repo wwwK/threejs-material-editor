@@ -9,7 +9,7 @@ function createWindow() { // 创建窗口
         show: false, center: true,
         autoHideMenuBar: true,
         width: 1333, height: 786,
-        webPreferences: { nodeIntegration: true }
+        webPreferences: { nodeIntegration: false }
 
     });
 
