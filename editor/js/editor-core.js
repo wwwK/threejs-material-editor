@@ -19,15 +19,21 @@ var MaterialEditor = function (editor) {
 
       if (currentObject === undefined) { alert("未找到可导出对象。"); return; }
 
+      var NUMBER_PRECISION = 6;
+
+      function parseNumber(key, value) {
+        return typeof value === 'number' ? parseFloat(value.toFixed(NUMBER_PRECISION)) : value;
+      }
+
       function externalImgHandler(jsonData) {
         for (var index = 0; index < jsonData.textures.length; index++) {
           jsonData.images[index].url = "./textures/" + jsonData.textures[index].name;
         }
       }
 
-      // function save_json(jsonData) {
-      //   saveString(JSON.stringify(jsonData), "model.json");
-      // }
+      function save_json(jsonData) {
+        saveString(JSON.stringify(jsonData, parseNumber), "model.json");
+      }
 
       function save_drcobj(jsonData) {
         var save_buffer = (new THREE.DrcobjExporter()).parse(jsonData, { quantization: [20, 10, 8, 10, 8] });
@@ -46,7 +52,7 @@ var MaterialEditor = function (editor) {
       if (options.includeImg === undefined) { options.includeImg = true; }
       if (options.includeImg === false) { externalImgHandler(currentObjectJSONData); }
 
-      save_drcobj(currentObjectJSONData);
+      save_json(currentObjectJSONData); save_drcobj(currentObjectJSONData);
 
     }
 
