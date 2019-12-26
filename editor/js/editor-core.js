@@ -136,8 +136,8 @@ var MaterialEditor = function (editor) {
     editor.signals.addMaterialAttributes.add(materialAddRoughnessMap);
     editor.signals.addMaterialAttributes.add(materialAddMetalness);
     editor.signals.addMaterialAttributes.add(materialAddMetalnessMap);
-    editor.signals.addMaterialAttributes.add(materialAddClearCoat);
-    editor.signals.addMaterialAttributes.add(materialAddClearCoatRoughness);
+    editor.signals.addMaterialAttributes.add(materialAddClearcoat);
+    editor.signals.addMaterialAttributes.add(materialAddClearcoatRoughness);
     editor.signals.addMaterialAttributes.add(materialAddMap);
     editor.signals.addMaterialAttributes.add(materialAddAlphaMap);
     editor.signals.addMaterialAttributes.add(materialAddSpecular);
@@ -389,7 +389,7 @@ var MaterialEditor = function (editor) {
       currentMaterial.type !== "MeshLambertMaterial" &&
       currentMaterial.type !== "MeshPhongMaterial" &&
       currentMaterial.type !== "MeshStandardMaterial") {
-      materialAttributes.clearCoat = currentMaterial.clearCoat;
+      materialAttributes.clearcoat = currentMaterial.clearcoat;
     }
 
     // 透明涂层粗糙度
@@ -397,7 +397,7 @@ var MaterialEditor = function (editor) {
       currentMaterial.type !== "MeshLambertMaterial" &&
       currentMaterial.type !== "MeshPhongMaterial" &&
       currentMaterial.type !== "MeshStandardMaterial") {
-      materialAttributes.clearCoatRoughness = currentMaterial.clearCoatRoughness;
+      materialAttributes.clearcoatRoughness = currentMaterial.clearcoatRoughness;
     }
 
     // 贴图
@@ -754,29 +754,29 @@ var MaterialEditor = function (editor) {
   }
 
   // 添加 清漆涂层
-  function materialAddClearCoat(folder) {
+  function materialAddClearcoat(folder) {
 
     if (materialAttributes.type === "MeshBasicMaterial") { return; }
     if (materialAttributes.type === "MeshLambertMaterial") { return; }
     if (materialAttributes.type === "MeshPhongMaterial") { return; }
     if (materialAttributes.type === "MeshStandardMaterial") { return; }
 
-    folder.add(materialAttributes, "clearCoat", 0.0, 1.0, 0.01).name("清漆涂层").onChange(function (value) {
-      currentMaterial.clearCoat = value;
+    folder.add(materialAttributes, "clearcoat", 0.0, 1.0, 0.01).name("清漆涂层").onChange(function (value) {
+      currentMaterial.clearcoat = value;
     });
 
   }
 
   // 添加 清漆涂层粗糙度
-  function materialAddClearCoatRoughness(folder) {
+  function materialAddClearcoatRoughness(folder) {
 
     if (materialAttributes.type === "MeshBasicMaterial") { return; }
     if (materialAttributes.type === "MeshLambertMaterial") { return; }
     if (materialAttributes.type === "MeshPhongMaterial") { return; }
     if (materialAttributes.type === "MeshStandardMaterial") { return; }
 
-    folder.add(materialAttributes, "clearCoatRoughness", 0.0, 1.0, 0.01).name("清漆涂层粗糙度").onChange(function (value) {
-      currentMaterial.clearCoatRoughness = value;
+    folder.add(materialAttributes, "clearcoatRoughness", 0.0, 1.0, 0.01).name("清漆涂层粗糙度").onChange(function (value) {
+      currentMaterial.clearcoatRoughness = value;
     });
 
   }

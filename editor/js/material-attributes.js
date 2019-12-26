@@ -42,8 +42,8 @@ var materialAttributes = {
     roughnessMap: "none",    // 粗糙度贴图 Standard
     metalness: 0.5,          // 金属度 Standard
     metalnessMap: "none",    // 金属度贴图 Standard
-    clearCoat: 0.0,          // 清漆涂层 Physical
-    clearCoatRoughness: 0.0, // 清漆涂层粗糙度 Physical
+    clearcoat: 0.0,          // 清漆涂层 Physical
+    clearcoatRoughness: 0.0, // 清漆涂层粗糙度 Physical
 
     map: "none",         // 贴图
     alphaMap: "none",    // 透明贴图
