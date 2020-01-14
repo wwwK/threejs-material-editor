@@ -1,6 +1,6 @@
 var MaterialEditor = function (editor) {
 
-  var self = this; var isGLTF = false;
+  var self = this;
   var currentObject, objectList = {}, objectNameList = [], boxHelper;
   var currentMaterial, materialList = {}, materialNameList = [];
   var currentTexture, textureList = {}, textureNameList = ["none"];
@@ -39,12 +39,6 @@ var MaterialEditor = function (editor) {
         var save_buffer = (new THREE.DrcobjExporter()).parse(jsonData, { quantization: [20, 10, 8, 10, 8] });
         saveArrayBuffer(save_buffer, "model.drcobj");
       }
-
-      // function save_gltf() {
-      //   (new THREE.GLTFExporter()).parse(currentObject, function (gltf) {
-      //     saveArrayBuffer(gltf, "model.glb");
-      //   }, { binary: true });
-      // }
 
       var currentObjectJSONData = currentObject.toJSON();
 
@@ -168,15 +162,11 @@ var MaterialEditor = function (editor) {
   /*********************************************/
 
   // 导入对象
-  self.importObject = function (object, is_gltf) {
+  self.importObject = function (object) {
 
     currentObject = object;
 
     autoCameraDistance(currentObject); // 摄像机距离自动适配
-
-    // if (isGLTF === undefined) { isGLTF = false; } isGLTF = is_gltf;
-
-    // setGLTFRendererGamma(); // 设置渲染器伽马校正
 
     // 写入数据
     object.traverse(function (child) {
@@ -204,8 +194,6 @@ var MaterialEditor = function (editor) {
   // 导入纹理
   self.importTexture = function (texture) {
 
-    // if (isGLTF) { texture.encoding = THREE.sRGBEncoding; texture.flipY = false; }
-
     textureList[texture.name] = texture;
     textureNameList.push(texture.name);
 
@@ -213,12 +201,6 @@ var MaterialEditor = function (editor) {
     editor.signals.createMaterialEditor.dispatch({ name: materialAttributes.name, type: materialAttributes.type });
 
   };
-
-  function setGLTFRendererGamma() {
-    if (!isGLTF) { return; }
-    editor.threeCore.renderer.gammaOutput = true;
-    editor.threeCore.renderer.gammaFactor = 2.2;
-  }
 
   function autoCameraDistance(object) {
 
