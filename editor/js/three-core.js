@@ -7,7 +7,7 @@ var ThreeCore = function () {
     container = self.container = document.getElementById("editor_canvas");
 
     renderer = self.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setClearColor(0x808080);
+    renderer.setClearColor(0x505050);
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
     container.appendChild(renderer.domElement);
@@ -24,7 +24,7 @@ var ThreeCore = function () {
     scene.add(ambientLight);
 
     camera = self.camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 1, 10000);
-    camera.position.set(30, 30, -30);
+    camera.position.set(30, 50, -30);
     camera.lookAt(scene.position);
 
     cameraController = self.cameraController = new THREE.OrbitControls(camera, renderer.domElement);
@@ -40,7 +40,7 @@ var ThreeCore = function () {
 
     cameraController.update();
 
-    var gridHelper = new THREE.GridHelper(28, 28, new THREE.Color(0x222222), new THREE.Color(0xEEEEEE));
+    var gridHelper = new THREE.GridHelper(30, 30, new THREE.Color(0xB2B2B2), new THREE.Color(0x888888));
     scene.add(gridHelper);
 
     renderer.render(scene, camera);
