@@ -40,53 +40,46 @@
     <embed class="editor_icon" src="./icon/tips.svg" type="image/svg+xml">
   </div>
 
-  <script src="./js/vendor/js-signals 1.0.0/signals.min.js"></script>
-  <script src="./js/vendor/jquery 3.4.1/jquery-3.4.1.min.js"></script>
-  <script src="./js/vendor/dat.gui 0.6.5/dat.gui.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/millermedeiros/js-signals@1.0.0/dist/signals.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/jquery/jquery@3.5.0/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/dataarts/dat.gui@v0.6.5/build/dat.gui.min.js"></script>
 
-  <script src="./js/vendor/three.js 0.111.0/three.min.js"></script>
-  <script src="./js/vendor/three.js 0.111.0/OrbitControls.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r116/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r116/examples/js/controls/OrbitControls.js"></script>
 
   <script src="./js/three-core.js"></script>
-  <script src="./js/material-attributes.js"></script>
-  <script src="./js/editor-core.js"></script>
+  <script src="./js/attributes.js"></script>
   <script src="./js/editor.js"></script>
 
-  <!-- 开始执行 -->
   <script>
 
     var editor = new Editor(); editor.init();
 
     function initLoader(loader) {
-
       switch (loader) {
-
-      case 'drcobj':
-      editor.threeCore.drcobjLoader = new THREE.DrcobjLoader();
-      editor.threeCore.drcobjLoader.setDecoderPath("./js/vendor/drcobj 1.0.1/");
-      break;
-
-      case 'fbx': editor.threeCore.fbxLoader = new THREE.FBXLoader(); break;
-
-      default: break;
-
+        case 'drcobj':
+          editor.threeCore.drcobjLoader = new THREE.DrcobjLoader();
+          editor.threeCore.drcobjLoader.setDecoderPath("https://cdn.jsdelivr.net/gh/ouyang-zhaoxing/drcobj@e7f3f34ce7c29a23189990f735b1761d434cfa8d/src/vendor/");
+          break;
+        case 'fbx': editor.threeCore.fbxLoader = new THREE.FBXLoader(); break;
+        default: break;
       }
-
     }
 
   </script>
 
-  <!-- 后置加载 -->
-  <script async src="./js/vendor/drcobj 1.0.1/draco_decoder.js"></script>
-  <script async src="./js/vendor/drcobj 1.0.1/draco_loader.js"></script>
-  <script async src="./js/vendor/drcobj 1.0.1/drcobj_loader.min.js" onload="initLoader('drcobj');"></script>
-  <script async src="./js/vendor/three.js 0.111.0/FBXLoader.min.js" onload="initLoader('fbx');"></script>
+  <!-- 导入导出第三方格式依赖库 后置加载 -->
 
-  <script async src="./js/vendor/drcobj 1.0.1/drcobj_exporter.min.js"></script>
-  <script async src="./js/vendor/drcobj 1.0.1/draco_encoder.js"></script>
-  <script async src="./js/vendor/drcobj 1.0.1/draco_exporter.js"></script>
+  <script async src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r116/examples/js/loaders/FBXLoader.js" onload="initLoader('fbx');"></script>
+  <script async src="https://cdn.jsdelivr.net/gh/imaya/zlib.js@0.3.1/bin/zlib.min.js"></script>
 
-  <script async src="./js/vendor/zlib.js 0.3.1/zlib.min.js"></script>
+  <script async src="https://cdn.jsdelivr.net/gh/ouyang-zhaoxing/drcobj@e7f3f34ce7c29a23189990f735b1761d434cfa8d/src/vendor/draco_decoder.js"></script>
+  <script async src="https://cdn.jsdelivr.net/gh/ouyang-zhaoxing/drcobj@e7f3f34ce7c29a23189990f735b1761d434cfa8d/src/vendor/draco_loader.min.js"></script>
+  <script async src="https://cdn.jsdelivr.net/gh/ouyang-zhaoxing/drcobj@e7f3f34ce7c29a23189990f735b1761d434cfa8d/src/js/drcobj_loader.min.js" onload="initLoader('drcobj');"></script>
+  <script async src="https://cdn.jsdelivr.net/gh/ouyang-zhaoxing/drcobj@e7f3f34ce7c29a23189990f735b1761d434cfa8d/src/vendor/draco_encoder.js"></script>
+  <script async src="https://cdn.jsdelivr.net/gh/ouyang-zhaoxing/drcobj@e7f3f34ce7c29a23189990f735b1761d434cfa8d/src/vendor/draco_exporter.min.js"></script>
+  <script async src="https://cdn.jsdelivr.net/gh/ouyang-zhaoxing/drcobj@e7f3f34ce7c29a23189990f735b1761d434cfa8d/src/js/drcobj_exporter.min.js"></script>
+
   <script async src="./js/utils.js"></script>
 
 </body>
