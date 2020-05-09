@@ -36,7 +36,7 @@ var MaterialEditor = function (editor) {
       }
 
       function save_drcobj(jsonData) {
-        var save_buffer = (new THREE.DrcobjExporter()).parse(jsonData, { quantization: [20, 10, 8, 10, 8] });
+        var save_buffer = (new THREE.DrcobjExporter()).parse(jsonData, { quantization: [16, 8, 10, 8, 8] });
         saveArrayBuffer(save_buffer, "model.drcobj");
       }
 
@@ -44,7 +44,7 @@ var MaterialEditor = function (editor) {
 
       if (options === undefined) { options = {}; }
       if (options.includeImg === undefined) { options.includeImg = true; }
-      if (options.includeImg === false) { externalImgHandler(currentObjectJSONData); }
+      if (options.includeImg === true) { externalImgHandler(currentObjectJSONData); }
 
       save_json(currentObjectJSONData); save_drcobj(currentObjectJSONData);
 
