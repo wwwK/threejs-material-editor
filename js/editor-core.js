@@ -957,7 +957,7 @@ var MaterialEditor = function (editor) {
   // 添加 环境光遮蔽贴图强度
   function materialAddAoMapIntensity(folder) {
 
-    folder.add(materialAttributes, "aoMapIntensity", 0.0, 1.0, 0.01).name("环境光遮蔽贴图强度").onChange(function (value) {
+    folder.add(materialAttributes, "aoMapIntensity", 0.0, 2.0, 0.01).name("环境光遮蔽贴图强度").onChange(function (value) {
       currentMaterial.aoMapIntensity = value;
     });
 
