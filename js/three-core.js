@@ -38,17 +38,8 @@ var ThreeCore = function () {
     cameraController.minPolarAngle = Math.PI * 0.2;
     cameraController.maxPolarAngle = Math.PI * 0.45;
 
-    cameraController.update();
-
     var gridHelper = new THREE.GridHelper(30, 30, new THREE.Color(0xB2B2B2), new THREE.Color(0x888888));
     scene.add(gridHelper);
-
-    renderer.render(scene, camera);
-
-    self.fileLoader = new THREE.FileLoader();
-    self.objectLoader = new THREE.ObjectLoader();
-    self.materialLoader = new THREE.MaterialLoader();
-    self.textureLoader = new THREE.TextureLoader();
 
   };
 
