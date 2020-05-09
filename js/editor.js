@@ -1003,7 +1003,7 @@ var MaterialEditor = function (editor) {
       var currentObjectJSONData = currentObject.toJSON();
 
       if (options === undefined) { options = {}; }
-      if (options.includeImg === undefined) { options.includeImg = true; }
+      if (options.includeImg === undefined) { options.includeImg = false; }
       if (options.includeImg === true) { externalImgHandler(currentObjectJSONData); }
 
       save_json(currentObjectJSONData); save_drcobj(currentObjectJSONData);
