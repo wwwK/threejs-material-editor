@@ -4,16 +4,13 @@ var Editor = function () {
 
   self.init = function () {
 
-    // 3D初始化
     threeCore = self.threeCore = new ThreeCore(); threeCore.init();
 
     materialEditor = self.materialEditor = new MaterialEditor(self);
 
-    // 监听文件拖放
     threeCore.container.addEventListener("drop", dropHandler);
     threeCore.container.addEventListener("dragover", dragoverHandler);
 
-    // 监听窗口调整
     window.addEventListener("resize", threeCore.resizeRenderArea, false);
 
     signalsInit();
@@ -21,7 +18,7 @@ var Editor = function () {
 
   };
 
-  signalsInit = function signalsInit() {
+  function signalsInit() {
 
     self.signals.inited = new signals.Signal();
     self.signals.inited.addOnce(threeCore.setUpdate, { update: update });
@@ -33,20 +30,7 @@ var Editor = function () {
     self.signals.textureImport = new signals.Signal();
     self.signals.textureImport.add(materialEditor.importTexture);
 
-  };
-
-  // 帧更新 
-  function update() {
-
-    threeCore.cameraController.update(); // 相机相关更新
-
-    threeCore.renderer.render(threeCore.scene, threeCore.camera); // 渲染更新
-
   }
-
-  /*********************************************/
-  /* 拖放导入                                   */
-  /*********************************************/
 
   function dragoverHandler(event) { event.preventDefault(); }
 
@@ -55,13 +39,11 @@ var Editor = function () {
     loadFiles(event.dataTransfer.files);
   }
 
-  // 加载文件
   function loadFiles(files) {
     if (files.length === 0) { return; }
     for (var i = 0; i < files.length; i++) { loadFile(files[i]); }
   }
 
-  // 加载文件识别并处理
   function loadFile(file) {
 
     var filename = file.name;
@@ -69,30 +51,19 @@ var Editor = function () {
 
     var reader = new FileReader();
 
-    // 读取 JSON Object
     var readObject = function () {
       reader.addEventListener("load", function (event) {
         importObjectHandler(file, event.target.result);
       }, false); reader.readAsText(file);
     };
 
-    // 读取 FBX/Drcobj
     var readObjectTF = function () {
-
       reader.addEventListener("load", function (event) {
-
-        if (extension === "fbx") {
-          importFBXObjectHandler(file, event.target.result);
-        }
-        else if (extension === "drcobj") {
-          importDrcobjHandler(file, event.target.result);
-        }
-
+        if (extension === "fbx") { importFBXObjectHandler(file, event.target.result); }
+        else if (extension === "drcobj") { importDrcobjHandler(file, event.target.result); }
       }, false); reader.readAsArrayBuffer(file);
-
     };
 
-    // 读取纹理
     var readTexture = function () {
       reader.addEventListener("load", function (event) {
         importTextureHandler(file, event.target.result);
@@ -100,43 +71,36 @@ var Editor = function () {
     };
 
     switch (extension) {
-
-      case "json":
-        readObject(); break;
-
-      case "fbx": case "drcobj":
-        readObjectTF(); break;
-
-      case "jpg": case "png":
-        readTexture(); break;
-
+      case "json": readObject(); break;
+      case "fbx": case "drcobj": readObjectTF(); break;
+      case "jpg": case "png": readTexture(); break;
       default: break;
-
     }
 
   }
 
-  // 处理JSON对象文件
   function importObjectHandler(file, data) {
+
     var objectJson = JSON.parse(data);
+
+    if (threeCore.objectLoader === undefined) { threeCore.objectLoader = new THREE.ObjectLoader(); }
+
     var object = threeCore.objectLoader.parse(objectJson);
     self.signals.objectImport.dispatch(object);
+
   }
 
-  // 处理FBX对象文件
   function importFBXObjectHandler(file, data) {
     var object = threeCore.fbxLoader.parse(data);
     self.signals.objectImport.dispatch(object);
   }
 
-  // 处理DRCOBJ对象文件
   function importDrcobjHandler(file, data) {
     threeCore.drcobjLoader.parse(data, function (object) {
       self.signals.objectImport.dispatch(object);
     });
   }
 
-  // 处理纹理文件
   function importTextureHandler(file, data) {
 
     var image = document.createElement("img");
@@ -152,6 +116,11 @@ var Editor = function () {
 
     }, false); image.src = data;
 
+  }
+
+  function update() {
+    threeCore.cameraController.update();
+    threeCore.renderer.render(threeCore.scene, threeCore.camera);
   }
 
 };
