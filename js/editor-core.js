@@ -212,6 +212,10 @@ var MaterialEditor = function (editor) {
 
     editor.threeCore.cameraController.minDistance = maxDis * 0.5;
     editor.threeCore.cameraController.maxDistance = maxDis * 5;
+
+    editor.threeCore.camera.far = editor.threeCore.cameraController.maxDistance + 10;
+    editor.threeCore.camera.updateProjectionMatrix();
+
     editor.threeCore.camera.position.set(maxDis * 2, maxDis * 2, -(maxDis * 2));
 
   }

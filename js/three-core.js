@@ -23,7 +23,7 @@ var ThreeCore = function () {
     ambientLight = self.ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.5);
     scene.add(ambientLight);
 
-    camera = self.camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 1, 10000);
+    camera = self.camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 1, 1000);
     camera.position.set(30, 50, -30);
     camera.lookAt(scene.position);
 
