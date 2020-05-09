@@ -985,6 +985,7 @@ var MaterialEditor = function (editor) {
       }
 
       function externalImgHandler(jsonData) {
+        if (jsonData.textures === undefined) { return; }
         for (var index = 0; index < jsonData.textures.length; index++) {
           jsonData.images[index].url = "./textures/" + jsonData.textures[index].name;
         }
