@@ -130,7 +130,7 @@ var MaterialEditor = function (editor) {
 
   var self = this;
 
-  var currentObject, objectList = {}, objectNameList = [], boxHelper;
+  var currentObject, objectList = {}, objectNameList = [], currentSelectObject, boxHelper;
   var currentMaterial, materialList = {}, materialNameList = [];
   var currentTexture, textureList = {}, textureNameList = ["空"]; self.optionControllers = [];
 
@@ -278,7 +278,8 @@ var MaterialEditor = function (editor) {
     objectController = objectListFolder.add(objectAttributes, "object", objectNameList);
     objectController.name("对象").onChange(function (value) {
 
-      currentMaterial = materialList[objectList[value].material.name];
+      currentSelectObject = objectList[value];
+      currentMaterial = materialList[currentSelectObject.material.name];
 
       materialAttributes.name = currentMaterial.name;
       materialNameController.updateDisplay();
@@ -987,7 +988,7 @@ var MaterialEditor = function (editor) {
       var NUMBER_PRECISION = 6;
 
       function parseNumber(key, value) {
-        return typeof value === 'number' ? parseFloat(value.toFixed(NUMBER_PRECISION)) : value;
+        return typeof value === "number" ? parseFloat(value.toFixed(NUMBER_PRECISION)) : value;
       }
 
       function externalImgHandler(jsonData) {
