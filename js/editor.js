@@ -765,7 +765,13 @@ var MaterialEditor = function (editor) {
 
       if (value === "空") { currentMaterial.aoMap = undefined; currentMaterial.needsUpdate = true; return; }
 
-      alert("模型不存在UV2，环境光遮蔽贴图无效。");
+      for (var key in objectList) {
+        if (objectList[key].material === currentMaterial) {
+          objectList[key].geometry.setAttribute("uv2", new THREE.BufferAttribute(objectList[key].geometry.attributes.uv.array, 2));
+          console.log(objectList[key].geometry);
+        }
+      }
+
 
       currentMaterial.aoMap = textureList[value];
       currentMaterial.needsUpdate = true;
