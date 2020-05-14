@@ -64,6 +64,12 @@ var Editor = function () {
       }, false); reader.readAsArrayBuffer(file);
     };
 
+    var readMatrial = function () {
+      reader.addEventListener("load", function (event) {
+        importMatrialHanler(file, event.target.result);
+      }, false); reader.readAsText(file);
+    };
+
     var readTexture = function () {
       reader.addEventListener("load", function (event) {
         importTextureHandler(file, event.target.result);
@@ -73,6 +79,7 @@ var Editor = function () {
     switch (extension) {
       case "json": readObject(); break;
       case "fbx": case "drcobj": readObjectTF(); break;
+      case "jsonmt": readMatrial(); break;
       case "jpg": case "png": readTexture(); break;
       default: break;
     }
@@ -99,6 +106,10 @@ var Editor = function () {
     threeCore.drcobjLoader.parse(data, function (object) {
       self.signals.objectImport.dispatch(object);
     });
+  }
+
+  function importMatrialHanler(file, data) {
+    var materialJson = JSON.parse(data);
   }
 
   function importTextureHandler(file, data) {
@@ -246,11 +257,20 @@ var MaterialEditor = function (editor) {
 
     createObjectController(); createMaterialController();
 
-    materialEditorGUI.open();
-
     autoCameraDistance(currentObject);
 
     editor.threeCore.scene.add(object);
+
+    objectAttributes.object = objectNameList[0];
+    objectController.updateDisplay();
+    materialAttributes.name = objectList[objectNameList[0]].material.name;
+    materialNameController.updateDisplay();
+    materialAttributes.type = objectList[objectNameList[0]].material.type;
+    materialTypeController.updateDisplay();
+
+    editor.signals.createMaterialEditor.dispatch({ name: materialAttributes.name, type: materialAttributes.type });
+
+    materialEditorGUI.open();
 
   };
 
@@ -725,7 +745,7 @@ var MaterialEditor = function (editor) {
     if (materialAttributes.type === "MeshLambertMaterial") { return; }
     if (materialAttributes.type === "MeshPhongMaterial") { return; }
 
-    folder.add(materialAttributes, "envMapIntensity", 0.0, 2.0, 0.01).name("环境贴图强度").onChange(function (value) {
+    folder.add(materialAttributes, "envMapIntensity", 0.0, 1.0, 0.01).name("环境贴图强度").onChange(function (value) {
       currentMaterial.envMapIntensity = value;
     });
 
@@ -768,8 +788,9 @@ var MaterialEditor = function (editor) {
 
       for (var key in objectList) {
         if (objectList[key].material === currentMaterial) {
-          objectList[key].geometry.setAttribute("uv2", new THREE.BufferAttribute(objectList[key].geometry.attributes.uv.array, 2));
-          console.log(objectList[key].geometry);
+          if (objectList[key].geometry.getAttribute("uv2") === undefined) {
+            objectList[key].geometry.setAttribute("uv2", new THREE.BufferAttribute(objectList[key].geometry.attributes.uv.array, 2));
+          }
         }
       }
 
@@ -785,7 +806,7 @@ var MaterialEditor = function (editor) {
 
   function materialAddAoMapIntensity(folder) {
 
-    folder.add(materialAttributes, "aoMapIntensity", 0.0, 2.0, 0.01).name("环境光遮蔽贴图强度").onChange(function (value) {
+    folder.add(materialAttributes, "aoMapIntensity", 0.0, 1.0, 0.01).name("环境光遮蔽贴图强度").onChange(function (value) {
       currentMaterial.aoMapIntensity = value;
     });
 
@@ -805,7 +826,7 @@ var MaterialEditor = function (editor) {
 
   function materialAddLightMapIntensity(folder) {
 
-    folder.add(materialAttributes, "lightMapIntensity", 0.0, 2.0, 0.01).name("光照贴图强度").onChange(function (value) {
+    folder.add(materialAttributes, "lightMapIntensity", 0.0, 1.0, 0.01).name("光照贴图强度").onChange(function (value) {
       currentMaterial.lightMapIntensity = value;
     });
 
@@ -991,6 +1012,12 @@ var MaterialEditor = function (editor) {
         return typeof value === "number" ? parseFloat(value.toFixed(NUMBER_PRECISION)) : value;
       }
 
+      function exportMaterial(jsonData) {
+        jsonData.materials.forEach(function (material) {
+          saveString(JSON.stringify(material), material.name + ".jsonmt");
+        });
+      }
+
       function externalImgHandler(jsonData) {
         if (jsonData.textures === undefined) { return; }
         for (var index = 0; index < jsonData.textures.length; index++) {
@@ -1010,8 +1037,10 @@ var MaterialEditor = function (editor) {
       var currentObjectJSONData = currentObject.toJSON();
 
       if (options === undefined) { options = {}; }
+      if (options.exportMaterial === undefined) { options.exportMaterial = true; }
       if (options.includeImg === undefined) { options.includeImg = false; }
-      if (options.includeImg === true) { externalImgHandler(currentObjectJSONData); }
+      // if (options.exportMaterial === true) { exportMaterial(currentObjectJSONData); }
+      if (options.includeImg === false) { externalImgHandler(currentObjectJSONData); }
 
       save_json(currentObjectJSONData); save_drcobj(currentObjectJSONData);
 
