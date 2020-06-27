@@ -1030,7 +1030,7 @@ var MaterialEditor = function (editor) {
       }
 
       function save_drcobj(jsonData) {
-        var save_buffer = (new THREE.DrcobjExporter()).parse(jsonData, { quantization: [16, 8, 10, 8, 8] });
+        var save_buffer = (new THREE.DrcobjExporter()).parse(jsonData, { quantization: [16, 8, 16, 8, 8] });
         saveArrayBuffer(save_buffer, "model.drcobj");
       }
 
